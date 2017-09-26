@@ -1,35 +1,41 @@
 package com.github.dubemarcantoine.comp352.ass01;
 
+import java.math.BigInteger;
+
 public class Tetranacci {
 
     public static void main(String[] args) {
         System.out.println(new Tetranacci().binary(10));
-        System.out.println(new Tetranacci().tailRecursive(100));
+        System.out.println(new Tetranacci().tailRecursive(5000));
     }
 
-    public long binary(int n) {
+    public BigInteger binary(int n) {
         if (n <= 2) {
-            return 0;
+            return BigInteger.ZERO;
         } else if (n <= 4) {
-            return 1;
-        } else {
-            return binary(n - 1) + binary(n - 2) + binary(n - 3) + binary(n - 4);
+            return BigInteger.ONE;
         }
+        return binary(n - 1).add(binary(n - 2)).add(binary(n - 3)).add(binary(n - 4));
     }
 
-    public long tailRecursive(int n) {
+    public BigInteger linear(int n) {
+
+        return BigInteger.ONE;
+    }
+
+    public BigInteger tailRecursive(int n) {
         if (n <= 2) {
-            return 0;
+            return BigInteger.ZERO;
         } else if (n <= 4) {
-            return 1;
+            return BigInteger.ONE;
         }
-        return tailRecursive(0, 0, 0, 1, n);
+        return tailRecursive(BigInteger.ZERO, BigInteger.ZERO, BigInteger.ZERO, BigInteger.ONE, n);
     }
 
-    private long tailRecursive(long a, long b, long c, long d, int count) {
+    private BigInteger tailRecursive(BigInteger a, BigInteger b, BigInteger c, BigInteger d, int count) {
         if(count <= 0) {
             return a;
         }
-        return tailRecursive(b, c, d, a+b+c+d, count-1);
+        return tailRecursive(b, c, d, a.add(b).add(c).add(d), count - 1);
     }
 }
