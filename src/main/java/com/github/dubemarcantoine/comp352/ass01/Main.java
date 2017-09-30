@@ -26,12 +26,16 @@ public class Main {
         TetranacciLinear tetranacciLinear = new TetranacciLinear();
         TetranacciTailRecursive tetranacciTailRecursive = new TetranacciTailRecursive();
 
+        // Warm up because first iteration is slower than the subsequent ones
         tetranacciBinary.warmUp();
         tetranacciLinear.warmUp();
         tetranacciTailRecursive.warmUp();
 
+        // Creates the results directory
         createResultsDirectory();
 
+        // Tests the Tetranacci time
+        // Binary takes too much time due to being exponential, the 35th iteration could go up to 10 minutes
         evaluateTetraTime(tetranacciBinary, TETTRANACCI_START, 30);
         evaluateTetraTime(tetranacciLinear, TETTRANACCI_START, TETRANACCI_END);
         evaluateTetraTime(tetranacciTailRecursive, TETTRANACCI_START, TETRANACCI_END);
