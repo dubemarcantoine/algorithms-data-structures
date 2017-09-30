@@ -18,8 +18,8 @@ public class Main {
         tetranacciBinary.warmUp();
         tetranacciLinear.warmUp();
         tetranacciTailRecursive.warmUp();
-
-        tetraTime(tetranacciTailRecursive);
+        System.out.println(tetranacciLinear.exec(10));
+//        tetraTime(tetranacciTailRecursive);
     }
 
     private static void tetraTime(Tetranacci tetranacci) {

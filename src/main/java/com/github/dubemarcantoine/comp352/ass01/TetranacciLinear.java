@@ -20,7 +20,7 @@ public class TetranacciLinear implements Tetranacci {
      */
     @Override
     public BigInteger exec(int n) {
-        return this.execRec(n).get(0);
+        return this.execRec(n).get(3);
     }
 
     /**
@@ -33,7 +33,7 @@ public class TetranacciLinear implements Tetranacci {
         if (n <= 2) {
             return Arrays.asList(BigInteger.ZERO, BigInteger.ZERO, BigInteger.ZERO, BigInteger.ZERO);
         } else if (n <= 4) {
-            return Arrays.asList(BigInteger.ONE, BigInteger.ONE, BigInteger.ZERO, BigInteger.ZERO);
+            return Arrays.asList(BigInteger.ZERO, BigInteger.ZERO, BigInteger.ONE, BigInteger.ONE);
         }
 
         List<BigInteger> list = this.execRec(n - 1);
@@ -41,6 +41,6 @@ public class TetranacciLinear implements Tetranacci {
                 .add(list.get(1))
                 .add(list.get(2))
                 .add(list.get(3));
-        return Arrays.asList(newMax, list.get(0), list.get(1), list.get(2));
+        return Arrays.asList(list.get(1), list.get(2), list.get(3), newMax);
     }
 }
