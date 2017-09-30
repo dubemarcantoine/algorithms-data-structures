@@ -1,0 +1,31 @@
+// Apply the java plugin to add support for Java
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+version = '1.0'
+mainClassName = 'com.github.dubemarcantoine.comp352.ass01.Main'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+}
+
+// Generates a jar at ./build/libs/*.jar
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'COMP-352 Tetranacci',
+                    'Implementation-Version': version,
+                    'Main-Class': mainClassName
+    }
+    baseName = 'ass01'
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+}
