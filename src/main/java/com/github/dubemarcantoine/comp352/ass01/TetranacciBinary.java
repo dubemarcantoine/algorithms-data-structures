@@ -2,9 +2,8 @@ package com.github.dubemarcantoine.comp352.ass01;
 
 import java.math.BigInteger;
 
-public class TetranacciBinary implements Tetranacci {
+public class TetranacciBinary {
 
-    @Override
     public void warmUp() {
         this.exec(10);
     }
@@ -17,7 +16,6 @@ public class TetranacciBinary implements Tetranacci {
      * @param n
      * @return
      */
-    @Override
     public BigInteger exec(int n) {
         if (n <= 2) {
             return BigInteger.ZERO;

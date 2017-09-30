@@ -2,6 +2,7 @@ package com.github.dubemarcantoine.comp352.ass01;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TetranacciLinear implements Tetranacci {
@@ -30,19 +31,9 @@ public class TetranacciLinear implements Tetranacci {
      */
     private List<BigInteger> execRec(int n) {
         if (n <= 2) {
-            List<BigInteger> list = new ArrayList<>();
-            list.add(BigInteger.ZERO);
-            list.add(BigInteger.ZERO);
-            list.add(BigInteger.ZERO);
-            list.add(BigInteger.ZERO);
-            return list;
+            return Arrays.asList(BigInteger.ZERO, BigInteger.ZERO, BigInteger.ZERO, BigInteger.ZERO);
         } else if (n <= 4) {
-            List<BigInteger> list = new ArrayList<>();
-            list.add(BigInteger.ONE);
-            list.add(BigInteger.ONE);
-            list.add(BigInteger.ZERO);
-            list.add(BigInteger.ZERO);
-            return list;
+            return Arrays.asList(BigInteger.ONE, BigInteger.ONE, BigInteger.ZERO, BigInteger.ZERO);
         }
 
         List<BigInteger> list = this.execRec(n - 1);
@@ -50,11 +41,6 @@ public class TetranacciLinear implements Tetranacci {
                 .add(list.get(1))
                 .add(list.get(2))
                 .add(list.get(3));
-        List<BigInteger> newList = new ArrayList<>();
-        newList.add(newMax);
-        newList.add(list.get(0));
-        newList.add(list.get(1));
-        newList.add(list.get(2));
-        return newList;
+        return Arrays.asList(newMax, list.get(0), list.get(1), list.get(2));
     }
 }
