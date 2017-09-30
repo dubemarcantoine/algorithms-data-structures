@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
 public class Main {
 
     public static final int TETTRANACCI_START = 5;
-    public static final int TETRANACCI_END = 100;
+    public static final int TETRANACCI_END = 1000;
 
     public static void main(String[] args) {
         TetranacciBinary tetranacciBinary = new TetranacciBinary();
