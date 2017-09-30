@@ -17,4 +17,6 @@ public interface Tetranacci {
      * is executed, this function is used as a warm up before the tests begin
      */
     void warmUp();
+
+    String getName();
 }

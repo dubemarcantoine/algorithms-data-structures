@@ -1,16 +1,10 @@
 package com.github.dubemarcantoine.comp352.ass01;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class TetranacciLinear implements Tetranacci {
-
-    @Override
-    public void warmUp() {
-        this.exec(10);
-    }
 
     /**
      * Calculates Tetranacci in linear time
@@ -42,5 +36,15 @@ public class TetranacciLinear implements Tetranacci {
                 .add(list.get(2))
                 .add(list.get(3));
         return Arrays.asList(list.get(1), list.get(2), list.get(3), newMax);
+    }
+
+    @Override
+    public void warmUp() {
+        this.exec(10);
+    }
+
+    @Override
+    public final String getName() {
+        return "linear";
     }
 }

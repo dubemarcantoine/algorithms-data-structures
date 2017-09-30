@@ -4,11 +4,6 @@ import java.math.BigInteger;
 
 public class TetranacciTailRecursive implements Tetranacci {
 
-    @Override
-    public void warmUp() {
-        this.exec(10);
-    }
-
     /**
      * Tetranacci tail recursive calculator
      *
@@ -36,5 +31,15 @@ public class TetranacciTailRecursive implements Tetranacci {
         }
         BigInteger newMax = a.add(b).add(c).add(d);
         return this.execRec(b, c, d, newMax, count - 1);
+    }
+
+    @Override
+    public void warmUp() {
+        this.exec(10);
+    }
+
+    @Override
+    public final String getName() {
+        return "linear-tail-recursive";
     }
 }

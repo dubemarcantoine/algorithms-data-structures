@@ -2,11 +2,7 @@ package com.github.dubemarcantoine.comp352.ass01;
 
 import java.math.BigInteger;
 
-public class TetranacciBinary {
-
-    public void warmUp() {
-        this.exec(10);
-    }
+public class TetranacciBinary implements Tetranacci {
 
     /**
      * Tetranacci exec calculator
@@ -16,6 +12,7 @@ public class TetranacciBinary {
      * @param n
      * @return
      */
+    @Override
     public BigInteger exec(int n) {
         if (n <= 2) {
             return BigInteger.ZERO;
@@ -26,5 +23,15 @@ public class TetranacciBinary {
                 .add(this.exec(n - 2))
                 .add(this.exec(n - 3))
                 .add(this.exec(n - 4));
+    }
+
+    @Override
+    public void warmUp() {
+        this.exec(10);
+    }
+
+    @Override
+    public final String getName() {
+        return "binary";
     }
 }
