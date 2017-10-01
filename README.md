@@ -1,17 +1,17 @@
 # comp-352-ass01 Tetranacci numbers
 ## a) Analysis of execution time of the different algorithms
 From the results in the results folder, the linear implementation is exponentially 
-faster than the binary implementation. This is because the binary executes in O(4^n) time vs 
+faster than the exponential implementation. This is because the exponential executes in O(4^n) time vs 
 the linear which executes in O(n) time. The second iteration of both functions consistently show a difference in speed
 of about 4 to 7 times, the linear being the faster one.
 
 Here is a comparision in nanoseconds of `Tetranacci(10)`
 
-| Executions | Binary | Linear | Ratio L/B |
-|------------|--------|--------|-----------|
-| 1          | 84010  | 13402  | 0.16      |
-| 2          | 117158 | 23006  | 0.2       |
-| 3          | 81651  | 14153  | 0.17      |
+| Executions | Exponential | Linear | Ratio L/B |
+|------------|-------------|--------|-----------|
+| 1          | 84010       | 13402  | 0.16      |
+| 2          | 117158      | 23006  | 0.2       |
+| 3          | 81651       | 14153  | 0.17      |
 
 The difference is not ***that*** big considering the execution times of each algorithm.
 However, if we compare the execution time of `Tetranacci(30)`, we quickly see the exponential difference of the 
@@ -19,9 +19,9 @@ two implementations.
 
 Given these observations, we would not be able to see the end of the Universe if we try to compute much bigger numbers.
 
-### Pseudocode Binary
+### Pseudocode Exponential
 ```pseudo
-Algorithm Binary(n)
+Algorithm Exponential(n)
     Input: The number of Tetranacci to compute
     Output: The computed number of Tetranacci
     
@@ -30,7 +30,7 @@ Algorithm Binary(n)
     else if n <= 4
         return 1
     
-    return Binary(n - 1) + Binary(n - 2) + Binary(n - 3) + Binary(n - 4)
+    return Exponential(n - 1) + Exponential(n - 2) + Exponential(n - 3) + Exponential(n - 4)
 ```
 ### Pseudocode Linear
 ```pseudo
@@ -55,14 +55,14 @@ Algorithm LinearRec(n)
 ```
 
 ## b) Briefly explain why the first algorithm is of exponential complexity and the second one is linear (more specifically, how the second algorithm resolves some specific bottleneck(s) of the first algorithm).
-The difference between the 2 algorithms is that the binary one does not re-use the previous results to compute the next
+The difference between the 2 algorithms is that the Exponential one does not re-use the previous results to compute the next
 result. Instead, it adds up 4 Tetranacci numbers and calculates them recursively.
 
 To solve this bottleneck, the linear algorithm keeps a list of the 4 previous Tetranacci numbers to add them
 together to get the next number. This means that it's done only once for each number.
 
 ## c) Do the previous algorithms use tail recursion?
-Both the linear and binary versions of Tetranacci previously designed and implemented do **not** use tail recursion.
+Both the linear and exponential versions of Tetranacci previously designed and implemented do **not** use tail recursion.
 This is because the last call in each of the functions is not the function itself which means that the
 stackframes will keep piling up for each of the recursions potentially causing a stack overflow.
 
@@ -96,8 +96,12 @@ Execute the Gradle wrapper to have a local project version
 - Linux/MacOS: `./gradlew`
 
 ### Run
+#### Gradle
 - Windows: `gradlew run`
 - Linux/MacOS: `./gradlew run`
+
+#### Jar
+`java -jar ass01-01.jar`
 
 ### Build
 - Windows: `gradlew build`

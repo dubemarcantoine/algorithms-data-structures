@@ -22,12 +22,12 @@ public class Main {
     public static final String RESULT_FILE_EXT = ".txt";
 
     public static void main(String[] args) {
-        TetranacciBinary tetranacciBinary = new TetranacciBinary();
+        TetranacciExponential tetranacciExponential = new TetranacciExponential();
         TetranacciLinear tetranacciLinear = new TetranacciLinear();
         TetranacciTailRecursive tetranacciTailRecursive = new TetranacciTailRecursive();
 
         // Warm up because first iteration is slower than the subsequent ones
-        tetranacciBinary.warmUp();
+        tetranacciExponential.warmUp();
         tetranacciLinear.warmUp();
         tetranacciTailRecursive.warmUp();
 
@@ -35,8 +35,8 @@ public class Main {
         createResultsDirectory();
 
         // Tests the Tetranacci time
-        // Binary takes too much time due to being exponential, the 35th iteration could go up to 10 minutes
-        evaluateTetraTime(tetranacciBinary, TETTRANACCI_START, 30);
+        // Don't want to the program to last from infinity and beyond, so let's cap it to 35 which is ~xx seconds
+        evaluateTetraTime(tetranacciExponential, TETTRANACCI_START, 35);
         evaluateTetraTime(tetranacciLinear, TETTRANACCI_START, TETRANACCI_END);
         evaluateTetraTime(tetranacciTailRecursive, TETTRANACCI_START, TETRANACCI_END);
     }
@@ -73,6 +73,7 @@ public class Main {
     private static void writeResultsToFile(List<String> results, String fileName) {
         try {
             Files.write(Paths.get(fileName), results);
+            System.out.println("Wrote results to: " + fileName);
         }
         catch(IOException e) {
             e.printStackTrace();

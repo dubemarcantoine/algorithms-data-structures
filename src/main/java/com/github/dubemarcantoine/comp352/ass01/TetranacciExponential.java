@@ -2,7 +2,7 @@ package com.github.dubemarcantoine.comp352.ass01;
 
 import java.math.BigInteger;
 
-public class TetranacciBinary implements Tetranacci {
+public class TetranacciExponential implements Tetranacci {
 
     /**
      * Tetranacci exec calculator
@@ -32,6 +32,6 @@ public class TetranacciBinary implements Tetranacci {
 
     @Override
     public final String getName() {
-        return "binary";
+        return "exponential";
     }
 }
