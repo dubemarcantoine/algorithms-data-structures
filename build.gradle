@@ -16,6 +16,10 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+test {
+    // Test configurations
+}
+
 // Generates a jar at ./build/libs/*.jar
 task fatJar(type: Jar) {
     manifest {
