@@ -4,7 +4,20 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Implementation of the linear Tetranacci algorithm
+ */
 public class TetranacciLinear implements Tetranacci {
+
+    @Override
+    public void warmUp() {
+        this.exec(10);
+    }
+
+    @Override
+    public final String getName() {
+        return "linear";
+    }
 
     /**
      * Calculates Tetranacci in linear time
@@ -24,7 +37,7 @@ public class TetranacciLinear implements Tetranacci {
      * @return
      */
     private List<BigInteger> execRec(int n) {
-        if (n <= 2) {
+        if (n <= 3) {
             return Arrays.asList(BigInteger.ZERO, BigInteger.ZERO, BigInteger.ZERO, BigInteger.ZERO);
         } else if (n <= 4) {
             return Arrays.asList(BigInteger.ZERO, BigInteger.ZERO, BigInteger.ONE, BigInteger.ONE);
@@ -36,15 +49,5 @@ public class TetranacciLinear implements Tetranacci {
                 .add(list.get(2))
                 .add(list.get(3));
         return Arrays.asList(list.get(1), list.get(2), list.get(3), newMax);
-    }
-
-    @Override
-    public void warmUp() {
-        this.exec(10);
-    }
-
-    @Override
-    public final String getName() {
-        return "linear";
     }
 }

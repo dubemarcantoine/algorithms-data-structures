@@ -2,15 +2,10 @@ package com.github.dubemarcantoine.comp352.ass01;
 
 import java.math.BigInteger;
 
+/**
+ * Definitions for the Tetranacci implementations
+ */
 public interface Tetranacci {
-
-    /**
-     * Calculates the Tetranacci numbers for n
-     *
-     * @param n
-     * @return
-     */
-    BigInteger exec(int n);
 
     /**
      * Because the execution time is always longer the first time a function
@@ -19,4 +14,12 @@ public interface Tetranacci {
     void warmUp();
 
     String getName();
+
+    /**
+     * Calculates the Tetranacci numbers for n
+     *
+     * @param n
+     * @return
+     */
+    BigInteger exec(int n);
 }

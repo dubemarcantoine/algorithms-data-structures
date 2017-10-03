@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 /**
- * Main class
+ * Main class to compare the different Tetranacci algorithms
  */
 public class Main {
 
@@ -35,7 +35,7 @@ public class Main {
         createResultsDirectory();
 
         // Tests the Tetranacci time
-        // Don't want to the program to last from infinity and beyond, so let's cap it to 35 which is ~xx seconds
+        // Don't want the program to last from infinity and beyond, so let's cap it to 35 which is ~xx seconds
         evaluateTetraTime(tetranacciExponential, TETTRANACCI_START, 35);
         evaluateTetraTime(tetranacciLinear, TETTRANACCI_START, TETRANACCI_END);
         evaluateTetraTime(tetranacciTailRecursive, TETTRANACCI_START, TETRANACCI_END);
@@ -50,8 +50,10 @@ public class Main {
     private static void evaluateTetraTime(Tetranacci tetranacci, int start, int end) {
         final String FILE_NAME = RESULT_FOLDER + tetranacci.getName() + "-"
                 + System.currentTimeMillis() + RESULT_FILE_EXT;
+
         List<String> results = new ArrayList<>();
-        results.add("number,nano,time");
+
+        results.add("number,nanoseconds,value");
 
         IntStream.iterate(start, x -> x + TETRANACCI_INCREMENT)
                 .limit(end / TETRANACCI_INCREMENT)
