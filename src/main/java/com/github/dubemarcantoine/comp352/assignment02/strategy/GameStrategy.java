@@ -2,6 +2,8 @@ package com.github.dubemarcantoine.comp352.assignment02.strategy;
 
 import com.github.dubemarcantoine.comp352.assignment02.MagneticCaveGameBoard;
 
+import java.util.Set;
+
 /**
  * Generic strategy to be implemented
  *
@@ -11,4 +13,6 @@ import com.github.dubemarcantoine.comp352.assignment02.MagneticCaveGameBoard;
 public interface GameStrategy {
 
     boolean solve(MagneticCaveGameBoard magneticCaveGameBoard);
+
+    boolean isMarkerNavigated(Set<Integer> indices, int index);
 }

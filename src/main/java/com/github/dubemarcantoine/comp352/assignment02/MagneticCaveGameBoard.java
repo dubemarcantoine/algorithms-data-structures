@@ -82,7 +82,9 @@ public class MagneticCaveGameBoard {
         if (marker < 0 || marker >= this.getBoardSize()) {
             return false;
         }
-        return this.board[marker] == END_WINNING_VALUE;
+        // Check that the marker is at last position and check that last position is the winning value
+        return marker == this.getBoardSize() -1 &&
+                this.board[marker] == END_WINNING_VALUE;
     }
 
     public int getMarkerStart() {
