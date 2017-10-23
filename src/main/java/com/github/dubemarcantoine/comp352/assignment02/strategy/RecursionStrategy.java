@@ -16,6 +16,10 @@ public class RecursionStrategy implements GameStrategy {
         int[] tree = new int[1000];
         Set<Integer> markers = new HashSet<>();
         int marker = magneticCaveGameBoard.getMarkerStart();
+        // Check just in case the board is [0], the game is won!
+        if (this.magneticCaveGameBoard.isGameSolved(marker)) {
+            return true;
+        }
         markers.add(marker);
         Integer left = magneticCaveGameBoard.getValueAtMarker(MoveDirection.LEFT, marker);
         Integer right = magneticCaveGameBoard.getValueAtMarker(MoveDirection.RIGHT, marker);
@@ -29,16 +33,17 @@ public class RecursionStrategy implements GameStrategy {
 
     private boolean solve(int marker, Integer leftValue, Integer rightValue, Set<Integer> markers) {
         boolean isSolved = false;
-        System.out.println(marker);
         if (rightValue != null) {
             Integer newMarker = this.magneticCaveGameBoard.getMarkerAfterMove(MoveDirection.RIGHT, marker);
+            if (this.magneticCaveGameBoard.isGameSolved(newMarker)) {
+                return true;
+            }
+
             if (this.isMarkerNavigated(markers, newMarker)) {
                 return false;
             }
             markers.add(newMarker);
-            if (this.magneticCaveGameBoard.isGameSolved(newMarker)) {
-                return true;
-            }
+
             Integer left = this.magneticCaveGameBoard.getValueAtMarker(MoveDirection.LEFT, newMarker);
             Integer right = this.magneticCaveGameBoard.getValueAtMarker(MoveDirection.RIGHT, newMarker);
             isSolved = this.solve(newMarker, left ,right, markers);
@@ -46,13 +51,15 @@ public class RecursionStrategy implements GameStrategy {
         }
         if (leftValue != null && !isSolved) {
             Integer newMarker = this.magneticCaveGameBoard.getMarkerAfterMove(MoveDirection.LEFT, marker);
+            if (this.magneticCaveGameBoard.isGameSolved(newMarker)) {
+                return true;
+            }
+
             if (this.isMarkerNavigated(markers, newMarker)) {
                 return false;
             }
             markers.add(newMarker);
-            if (this.magneticCaveGameBoard.isGameSolved(newMarker)) {
-                return true;
-            }
+
             Integer left = this.magneticCaveGameBoard.getValueAtMarker(MoveDirection.LEFT, newMarker);
             Integer right = this.magneticCaveGameBoard.getValueAtMarker(MoveDirection.RIGHT, newMarker);
             isSolved = this.solve(newMarker, left ,right, markers);
