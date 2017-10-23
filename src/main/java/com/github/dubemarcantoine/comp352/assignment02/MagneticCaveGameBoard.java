@@ -6,11 +6,6 @@ public class MagneticCaveGameBoard {
     public static final int DEFAULT_BOARD_SIZE = 10;
 
     /**
-     * The current marker on the board
-     */
-    private int marker;
-
-    /**
      * The origin marker
      */
     private int markerStart;
@@ -35,34 +30,59 @@ public class MagneticCaveGameBoard {
      * @param board
      */
     MagneticCaveGameBoard(int marker, Integer[] board) {
-        this.marker = marker;
         this.markerStart = marker;
         this.board = board;
         this.size = this.board.length;
     }
 
-    /**
-     * Moves the marker left if negative and right if positive
-     * @param steps
-     * @throws IndexOutOfBoundsException
-     */
-    public void moveMarker(int steps) throws IndexOutOfBoundsException {
-        if (this.marker + steps >= this.board.length) {
-            throw new IndexOutOfBoundsException("Cannot move to this position");
+    public int getSteps(int value) {
+        return value % 2 == 0
+                ? value / 2
+                : value / 2 + 1;
+    }
+
+    public Integer getValueAtMarker(MoveDirection moveDirection, int marker) {
+        Integer value = null;
+        int stepCount = this.getSteps(this.getMarkerValue(marker));
+        switch (moveDirection) {
+            case LEFT:
+                if (marker - stepCount > 0) {
+                    value = this.board[marker - stepCount];
+                }
+                break;
+            case RIGHT:
+                if (marker + stepCount < this.getBoardSize()) {
+                    value = this.board[marker + stepCount];
+                }
+                break;
         }
-        this.marker += steps;
+        return value;
+    }
+
+    public int getMarkerAfterMove(MoveDirection moveDirection, int marker) {
+        int stepCount = this.getSteps(this.getMarkerValue(marker));
+        switch (moveDirection) {
+            case LEFT:
+                return marker - stepCount;
+            case RIGHT:
+                return marker + stepCount;
+        }
+        return marker;
+    }
+
+    public int getMarkerValue(int marker) {
+        return this.board[marker];
     }
 
     /**
      * Checks if the marker is on the last index which means the game is solved
      * @return
      */
-    public boolean isGameSolved() {
-        return this.board[this.marker - 1] == END_WINNING_VALUE;
-    }
-
-    public int getMarker() {
-        return this.marker;
+    public boolean isGameSolved(int marker) {
+        if (marker < 0 || marker >= this.getBoardSize()) {
+            return false;
+        }
+        return this.board[marker] == END_WINNING_VALUE;
     }
 
     public int getMarkerStart() {
@@ -73,7 +93,7 @@ public class MagneticCaveGameBoard {
         return this.board;
     }
 
-    public int getSize() {
+    public int getBoardSize() {
         return this.size;
     }
 }

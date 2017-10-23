@@ -1,5 +1,7 @@
 package com.github.dubemarcantoine.comp352.assignment02.strategy;
 
+import com.github.dubemarcantoine.comp352.assignment02.MagneticCaveGameBoard;
+
 /**
  * Generic strategy to be implemented
  *
@@ -7,4 +9,6 @@ package com.github.dubemarcantoine.comp352.assignment02.strategy;
  * can possibly land on the 0, if not, the game is unsolvable. This check is O(n)
  */
 public interface GameStrategy {
+
+    boolean solve(MagneticCaveGameBoard magneticCaveGameBoard);
 }
