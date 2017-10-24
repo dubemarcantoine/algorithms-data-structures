@@ -23,8 +23,8 @@ public class RecursionStrategy implements GameStrategy {
             return true;
         }
         markers.add(marker);
-        Integer left = magneticCaveGameBoard.getValueAtMarker(MoveDirection.LEFT, marker);
-        Integer right = magneticCaveGameBoard.getValueAtMarker(MoveDirection.RIGHT, marker);
+        Integer left = magneticCaveGameBoard.getValueAtMarkerAfterSteps(MoveDirection.LEFT, marker);
+        Integer right = magneticCaveGameBoard.getValueAtMarkerAfterSteps(MoveDirection.RIGHT, marker);
         return this.solve(marker, left, right, markers);
     }
 
@@ -33,7 +33,6 @@ public class RecursionStrategy implements GameStrategy {
     }
 
     private boolean solve(int marker, Integer leftValue, Integer rightValue, Set<Integer> markers) {
-        boolean isSolved = false;
         if (rightValue != null) {
             Integer newMarker = this.magneticCaveGameBoard.getMarkerAfterMove(MoveDirection.RIGHT, marker);
             if (this.magneticCaveGameBoard.isGameSolved(newMarker)) {
@@ -41,31 +40,37 @@ public class RecursionStrategy implements GameStrategy {
             }
 
             if (this.isMarkerNavigated(markers, newMarker)) {
+                markers.remove(newMarker);
                 return false;
             }
             markers.add(newMarker);
 
-            Integer left = this.magneticCaveGameBoard.getValueAtMarker(MoveDirection.LEFT, newMarker);
-            Integer right = this.magneticCaveGameBoard.getValueAtMarker(MoveDirection.RIGHT, newMarker);
-            isSolved = this.solve(newMarker, left ,right, markers);
+            Integer left = this.magneticCaveGameBoard.getValueAtMarkerAfterSteps(MoveDirection.LEFT, newMarker);
+            Integer right = this.magneticCaveGameBoard.getValueAtMarkerAfterSteps(MoveDirection.RIGHT, newMarker);
+            if (this.solve(newMarker, left ,right, markers)) {
+                return true;
+            }
             markers.remove(newMarker);
         }
-        if (leftValue != null && !isSolved) {
+        if (leftValue != null) {
             Integer newMarker = this.magneticCaveGameBoard.getMarkerAfterMove(MoveDirection.LEFT, marker);
             if (this.magneticCaveGameBoard.isGameSolved(newMarker)) {
                 return true;
             }
 
             if (this.isMarkerNavigated(markers, newMarker)) {
+                markers.remove(newMarker);
                 return false;
             }
             markers.add(newMarker);
 
-            Integer left = this.magneticCaveGameBoard.getValueAtMarker(MoveDirection.LEFT, newMarker);
-            Integer right = this.magneticCaveGameBoard.getValueAtMarker(MoveDirection.RIGHT, newMarker);
-            isSolved = this.solve(newMarker, left ,right, markers);
+            Integer left = this.magneticCaveGameBoard.getValueAtMarkerAfterSteps(MoveDirection.LEFT, newMarker);
+            Integer right = this.magneticCaveGameBoard.getValueAtMarkerAfterSteps(MoveDirection.RIGHT, newMarker);
+            if (this.solve(newMarker, left ,right, markers)) {
+                return true;
+            }
             markers.remove(newMarker);
         }
-        return isSolved;
+        return false;
     }
 }

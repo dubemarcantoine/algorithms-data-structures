@@ -25,7 +25,9 @@ public class ListStrategy implements GameStrategy {
     public boolean solve(MagneticCaveGameBoard magneticCaveGameBoard) {
         this.gameBoard = magneticCaveGameBoard;
 
-        this.tree = new ArrayList<>(Collections.nCopies(1000, null));
+        this.tree = new ArrayList<>(Collections.nCopies(20, null));
+
+        // Set up initial node
         int treeIndex = 0;
         int marker = this.gameBoard.getMarkerStart();
         this.tree.set(0, marker);
@@ -33,6 +35,13 @@ public class ListStrategy implements GameStrategy {
         return solve(treeIndex, marker);
     }
 
+    /**
+     * Checks if this marker has been visited by the parents
+     * It is the equivalent of bubbling up in a binary tree, so the complexity is O(log(n))
+     * @param parentNode
+     * @param marker
+     * @return
+     */
     private boolean isMarkerNavigated(int parentNode, int marker) {
         Integer parentNodeMarker = this.valueAt(parentNode);
         if (parentNodeMarker == marker) {
@@ -45,7 +54,14 @@ public class ListStrategy implements GameStrategy {
         return isMarkerNavigated(parentNode, marker);
     }
 
+    /**
+     * Recursively solves the magnetic cave
+     * @param treeIndex
+     * @param marker
+     * @return
+     */
     private boolean solve(int treeIndex, int marker) {
+        System.out.println("solve index=" + treeIndex + "   marker="+marker);
         // Get markers at left and right of current marker
         Integer markerRight = this.gameBoard.getMarkerAfterMove(MoveDirection.RIGHT, marker);
         if (this.gameBoard.isGameSolved(markerRight)) {
@@ -56,17 +72,26 @@ public class ListStrategy implements GameStrategy {
             return true;
         }
 
+        // Insert the right marker at the right of the current index
         this.insertRight(treeIndex, markerRight);
+        // Insert the left marker at the left of the current index
         this.insertLeft(treeIndex, markerLeft);
 
+        // Try solving the right hand side first
         Integer rightMarkerValue = this.gameBoard.getMarkerValue(markerRight);
+        // Make sure that the marker has never been navigated to
         if (rightMarkerValue != null && !this.isMarkerNavigated(treeIndex, markerRight)) {
+            // Solve with new marker if right value at marker was in bound
             if (this.solve(this.indexAtRight(treeIndex), markerRight)) {
                 return true;
             }
         }
+
+        // Try solving by the left hand side
         Integer leftMarkerValue = this.gameBoard.getMarkerValue(markerLeft);
+        // Make sure that the marker has never been navigated to
         if (leftMarkerValue != null && !this.isMarkerNavigated(treeIndex, markerLeft)) {
+            // Solve with new marker if left value at marker was in bound
             if (this.solve(this.indexAtLeft(treeIndex), markerLeft)) {
                 return true;
             }
@@ -75,6 +100,11 @@ public class ListStrategy implements GameStrategy {
         return false;
     }
 
+    /**
+     * Returns a value at an index
+     * @param treeIndex
+     * @return
+     */
     private Integer valueAt(int treeIndex) {
         return this.tree.get(treeIndex);
     }
@@ -85,7 +115,7 @@ public class ListStrategy implements GameStrategy {
      * @param value
      */
     private void insertLeft(int treeIndex, Integer value) {
-        this.tree.set(this.indexAtLeft(treeIndex), value);
+        this.insert(this.indexAtLeft(treeIndex), value);
     }
 
     /**
@@ -94,7 +124,15 @@ public class ListStrategy implements GameStrategy {
      * @param value
      */
     private void insertRight(int treeIndex, Integer value) {
-        this.tree.set(this.indexAtRight(treeIndex), value);
+        this.insert(this.indexAtRight(treeIndex), value);
+    }
+
+    private void insert(int index, Integer value) {
+        if (index >= this.tree.size()) {
+            // Double the list
+            this.tree.addAll(new ArrayList<>(Collections.nCopies(this.tree.size() * 2, null)));
+        }
+        this.tree.set(index, value);
     }
 
     /**

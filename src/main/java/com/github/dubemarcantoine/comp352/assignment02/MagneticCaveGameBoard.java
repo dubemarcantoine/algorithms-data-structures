@@ -35,18 +35,29 @@ public class MagneticCaveGameBoard {
         this.size = this.board.length;
     }
 
+    /**
+     * Returns the number of steps for a value
+     * @param value
+     * @return
+     */
     public int getSteps(int value) {
         return value % 2 == 0
                 ? value / 2
                 : value / 2 + 1;
     }
 
-    public Integer getValueAtMarker(MoveDirection moveDirection, int marker) {
+    /**
+     * Returns the value at a marker after a move in a direction
+     * @param moveDirection
+     * @param marker
+     * @return
+     */
+    public Integer getValueAtMarkerAfterSteps(MoveDirection moveDirection, int marker) {
         Integer value = null;
         int stepCount = this.getSteps(this.getMarkerValue(marker));
         switch (moveDirection) {
             case LEFT:
-                if (marker - stepCount > 0) {
+                if (marker - stepCount >= 0) {
                     value = this.board[marker - stepCount];
                 }
                 break;
@@ -59,6 +70,12 @@ public class MagneticCaveGameBoard {
         return value;
     }
 
+    /**
+     * Returns the marker after a move
+     * @param moveDirection
+     * @param marker
+     * @return
+     */
     public int getMarkerAfterMove(MoveDirection moveDirection, int marker) {
         int stepCount = this.getSteps(this.getMarkerValue(marker));
         switch (moveDirection) {
@@ -70,6 +87,11 @@ public class MagneticCaveGameBoard {
         return marker;
     }
 
+    /**
+     * Returns the current marker value
+     * @param marker
+     * @return
+     */
     public Integer getMarkerValue(int marker) {
         if (marker < 0 || marker >= this.getBoardSize()) {
             return null;
@@ -90,6 +112,10 @@ public class MagneticCaveGameBoard {
                 this.board[marker] == END_WINNING_VALUE;
     }
 
+    /**
+     * Returns the marker for the start
+     * @return
+     */
     public int getMarkerStart() {
         return this.markerStart;
     }
