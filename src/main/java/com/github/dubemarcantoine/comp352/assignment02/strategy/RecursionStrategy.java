@@ -6,6 +6,9 @@ import com.github.dubemarcantoine.comp352.assignment02.MoveDirection;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Recursive strategy
+ */
 public class RecursionStrategy implements GameStrategy {
 
     private MagneticCaveGameBoard magneticCaveGameBoard;
@@ -13,7 +16,6 @@ public class RecursionStrategy implements GameStrategy {
     @Override
     public boolean solve(MagneticCaveGameBoard magneticCaveGameBoard) {
         this.magneticCaveGameBoard = magneticCaveGameBoard;
-        int[] tree = new int[1000];
         Set<Integer> markers = new HashSet<>();
         int marker = magneticCaveGameBoard.getMarkerStart();
         // Check just in case the board is [0], the game is won!
@@ -26,8 +28,7 @@ public class RecursionStrategy implements GameStrategy {
         return this.solve(marker, left, right, markers);
     }
 
-    @Override
-    public boolean isMarkerNavigated(Set<Integer> markers, int marker) {
+    private boolean isMarkerNavigated(Set<Integer> markers, int marker) {
         return markers.contains(marker);
     }
 

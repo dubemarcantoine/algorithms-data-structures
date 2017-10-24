@@ -13,6 +13,4 @@ import java.util.Set;
 public interface GameStrategy {
 
     boolean solve(MagneticCaveGameBoard magneticCaveGameBoard);
-
-    boolean isMarkerNavigated(Set<Integer> indices, int index);
 }

@@ -70,7 +70,10 @@ public class MagneticCaveGameBoard {
         return marker;
     }
 
-    public int getMarkerValue(int marker) {
+    public Integer getMarkerValue(int marker) {
+        if (marker < 0 || marker >= this.getBoardSize()) {
+            return null;
+        }
         return this.board[marker];
     }
 
