@@ -1,14 +1,66 @@
 # Right Magnetic Cave Algorithm
 ## a) Briefly explain the time and space complexity for both versions of your game. You can write your answer in a separate file and submit it together with the other submissions.
+### Recursion strategy
+The recursion strategy acts as a virtual binary tree without having a tree structure. 
+At every given move, it gets the value to it's left and to it's right. It then checks
+if it is possible to go right as it tries to get the farthest possible to the right.
+If it gets stuck in a cycle, the recursion tries to go left and unwinds on all previous values
+until it could go back right.
+It keeps track of the previous visited markers with a `Set<Integer>` which takes O(1) to lookup into.
 
-## b) For the first version of your solution describe the type of recursion used in yourimplementation. Does the particular type of recursion have an impact on the time and space complexity? Justify your answer.
+It's worst case scenario is O(n²). Because it always tries to go right, if the marker starts at
+the last index of the board before 0 and that the index of the board that get's to 0 is the first
+index of the board, the algorithm will try to go right, be blocked, then go left, then try to go right,
+so for every given marker, it could try all right values before finally trying the left ones.
+
+The base case scenario is O(n) (or less). For example, if we start at 0 and all the steps are 1 up to the last element,
+n operations will be performed
+
+See b) for space complexity
+
+### List strategy
+The strategy of the list was to implement a binary tree with the list.
+
+The time complexity is O(nlogn). The operations performed are n which is the side of the board and logn is the time
+it could take to bubble up from a leaf to the root node. In this case, `n=h` where h is the height of the binary
+tree.
+
+The space complexity is more problematic as it is exponential depending on the height of the tree which could be n.
+So the big-O space is O(2^n).
+
+## b) For the first version of your solution describe the type of recursion used in your implementation. Does the particular type of recursion have an impact on the time and space complexity? Justify your answer.
+The recursion used is binary recursion. This recursion has an impact on the space complexity
+as a stack overflow could potentially occur if the recursion is too deep. The space complexity is then O(n²).
 
 ## c) For the second part of your solution, justify why you choose that particular data structure (e.g. why you choose a stack and not a queue, etc.)
+I decided to use a list as it provided a good base to implement a binary tree.
+Due to the nature of the problem, IE deciding on going right or left, the representation of a binary tree felt like a 
+good way to tackle this problem. However, the biggest issue has been the space complexity as we need large amounts of
+RAM/Heap Space to solve larger boards.
 
 ## d) Provide test logs for at least 20 different game configurations, sufficiently complete to show that your solution works for various row sizes and square values.
+See logs/*.txt
 
 ## e) If possible, explain how one can detect unsolvable array configurations and whether there exists a way to speed up the execution time. Answering this question is optional and you can earn bonus marks by submitting a good solution.
-We should ensure
+We should ensure that the board is solvable by checking if any of the values can
+reach the last element of the array and that this element equals 0.
+
+This check would be done in O(n) time and can potentially save computing time.
+
+```
+Algorithm isSolvable(board)
+    Input: An array of integers
+    Output: Boolean if the board can be solved
+    
+    FOR i ← 0 to board.size - 2
+        IF getValueAtMarkerAfterSteps(RIGHT, i) THEN
+            return true
+    END FOR
+
+```
+
+Another quick check could be to check if the marker is already on the last element
+and that element is of 0 value. This would be done in O(1)
 
 ## Pseudo Code
 ### Recursive Strategy

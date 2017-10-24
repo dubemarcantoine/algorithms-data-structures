@@ -16,6 +16,8 @@ public class RecursionStrategy implements GameStrategy {
     @Override
     public boolean solve(MagneticCaveGameBoard magneticCaveGameBoard) {
         this.magneticCaveGameBoard = magneticCaveGameBoard;
+        System.out.println(this.magneticCaveGameBoard.toString());
+
         Set<Integer> markers = new HashSet<>();
         int marker = magneticCaveGameBoard.getMarkerStart();
         // Check just in case the board is [0], the game is won!

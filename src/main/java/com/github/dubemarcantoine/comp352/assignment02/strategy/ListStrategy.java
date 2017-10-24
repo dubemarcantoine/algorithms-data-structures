@@ -24,12 +24,16 @@ public class ListStrategy implements GameStrategy {
     @Override
     public boolean solve(MagneticCaveGameBoard magneticCaveGameBoard) {
         this.gameBoard = magneticCaveGameBoard;
+        System.out.println(this.gameBoard.toString());
 
+        int marker = this.gameBoard.getMarkerStart();
+        if (this.gameBoard.isGameSolved(marker)) {
+            return true;
+        }
         this.tree = new ArrayList<>(Collections.nCopies(20, null));
 
         // Set up initial node
         int treeIndex = 0;
-        int marker = this.gameBoard.getMarkerStart();
         this.tree.set(0, marker);
 
         return solve(treeIndex, marker);

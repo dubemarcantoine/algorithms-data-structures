@@ -1,5 +1,7 @@
 package com.github.dubemarcantoine.comp352.assignment02;
 
+import java.util.Arrays;
+
 public class MagneticCaveGameBoard {
 
     public static final int END_WINNING_VALUE = 0;
@@ -21,7 +23,13 @@ public class MagneticCaveGameBoard {
      * Generates a random game and places the marker at 0
      */
     MagneticCaveGameBoard() {
-        // TODO: Generate random game
+        this.markerStart = 0;
+        this.board = new Integer[DEFAULT_BOARD_SIZE];
+        for (int i=0; i<DEFAULT_BOARD_SIZE - 1; i++) {
+            this.board[i] = (int)Math.floor(Math.random() * DEFAULT_BOARD_SIZE) + 1;
+        }
+        // Set last value as 0
+        this.board[DEFAULT_BOARD_SIZE - 1] = 0;
     }
 
     /**
@@ -108,8 +116,8 @@ public class MagneticCaveGameBoard {
             return false;
         }
         // Check that the marker is at last position and check that last position is the winning value
-        return marker == this.getBoardSize() -1 &&
-                this.board[marker] == END_WINNING_VALUE;
+        return marker == this.getBoardSize() -1
+                && this.board[marker] == END_WINNING_VALUE;
     }
 
     /**
@@ -126,5 +134,13 @@ public class MagneticCaveGameBoard {
 
     public int getBoardSize() {
         return this.size;
+    }
+
+    @Override
+    public String toString() {
+        return "MagneticCaveGameBoard{" +
+                "markerStart=" + markerStart +
+                ", board=" + Arrays.toString(board) +
+                '}';
     }
 }
