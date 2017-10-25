@@ -15,6 +15,7 @@ public class RecursionStrategy implements GameStrategy {
 
     @Override
     public boolean solve(MagneticCaveGameBoard magneticCaveGameBoard) {
+        System.out.println("-------- Recursion Strategy -----------");
         this.magneticCaveGameBoard = magneticCaveGameBoard;
         System.out.println(this.magneticCaveGameBoard.toString());
 

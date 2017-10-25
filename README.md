@@ -179,3 +179,26 @@ Algorithm isMarkerNavigated(parentNode, marker)
     parentNode ← (parentNode - 1) / 2
     return isMarkerNavigated(parentNode, marker)
 ```
+
+
+### Tests
+- Windows: `gradlew test`
+- Linux/MacOS: `./gradlew test`
+
+### Run
+#### Gradle
+- Windows: `gradlew run`
+- Linux/MacOS: `./gradlew run`
+
+#### Jar
+`java -jar a2-01.jar`
+
+### Build
+- Windows: `gradlew build`
+- Linux/MacOS: `./gradlew build`
+
+### Jar
+- Windows: `gradlew fatJar`
+- Linux/MacOS: `./gradlew fatJar`
+
+The jar is generated at `./build/libs/a2-1.0.jar`

@@ -23,6 +23,7 @@ public class ListStrategy implements GameStrategy {
 
     @Override
     public boolean solve(MagneticCaveGameBoard magneticCaveGameBoard) {
+        System.out.println("-------- List Strategy -----------");
         this.gameBoard = magneticCaveGameBoard;
         System.out.println(this.gameBoard.toString());
 
@@ -36,7 +37,9 @@ public class ListStrategy implements GameStrategy {
         int treeIndex = 0;
         this.tree.set(0, marker);
 
-        return solve(treeIndex, marker);
+        boolean isSolved = solve(treeIndex, marker);
+        System.out.println(this.toString());
+        return isSolved;
     }
 
     /**
@@ -157,5 +160,12 @@ public class ListStrategy implements GameStrategy {
      */
     private int indexAtRight(int treeIndex) {
         return 2 * treeIndex + 2;
+    }
+
+    @Override
+    public String toString() {
+        return "ListStrategy{" +
+                "tree=" + tree +
+                '}';
     }
 }

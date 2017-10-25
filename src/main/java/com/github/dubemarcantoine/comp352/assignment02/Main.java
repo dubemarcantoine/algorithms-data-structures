@@ -12,9 +12,7 @@ import java.util.Collections;
 public class Main {
 
     public static void main(String[] args) {
-        Integer[] values = {0};
-//        Integer[] values = {1, 1, 1, 1, 0};
-        MagneticCaveGameBoard gameBoard = new MagneticCaveGameBoard(0, values);
-        System.out.println(new ListStrategy().solve(gameBoard));
+        System.out.println(new ListStrategy().solve(new MagneticCaveGameBoard()));
+        System.out.println(new RecursionStrategy().solve(new MagneticCaveGameBoard()));
     }
 }

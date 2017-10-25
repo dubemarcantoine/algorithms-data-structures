@@ -33,6 +33,7 @@ public class MagneticCaveGameBoard {
         }
         // Set last value as 0
         this.board[DEFAULT_BOARD_SIZE - 1] = 0;
+        this.size = this.board.length;
     }
 
     /**
