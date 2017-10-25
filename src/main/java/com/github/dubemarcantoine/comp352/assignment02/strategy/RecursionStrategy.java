@@ -35,7 +35,9 @@ public class RecursionStrategy implements GameStrategy {
     }
 
     private boolean solve(int marker, Integer leftValue, Integer rightValue, Set<Integer> markers) {
+        System.out.println("marker="+marker+"  leftValue="+leftValue+"  rightValue="+ rightValue);
         if (rightValue != null) {
+            System.out.println("Going right");
             Integer newMarker = this.magneticCaveGameBoard.getMarkerAfterMove(MoveDirection.RIGHT, marker);
             if (this.magneticCaveGameBoard.isGameSolved(newMarker)) {
                 return true;
@@ -55,6 +57,7 @@ public class RecursionStrategy implements GameStrategy {
             markers.remove(newMarker);
         }
         if (leftValue != null) {
+            System.out.println("Going left");
             Integer newMarker = this.magneticCaveGameBoard.getMarkerAfterMove(MoveDirection.LEFT, marker);
             if (this.magneticCaveGameBoard.isGameSolved(newMarker)) {
                 return true;

@@ -53,7 +53,8 @@ Algorithm isSolvable(board)
     Output: Boolean if the board can be solved
     
     FOR i ← 0 to board.size - 2
-        IF getValueAtMarkerAfterSteps(RIGHT, i) THEN
+        marker ← getMarkerAfterMove(RIGHT, i)
+        IF isGameSolved(marker) THEN
             return true
     END FOR
 

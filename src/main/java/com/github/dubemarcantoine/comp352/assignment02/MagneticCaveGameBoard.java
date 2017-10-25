@@ -2,6 +2,9 @@ package com.github.dubemarcantoine.comp352.assignment02;
 
 import java.util.Arrays;
 
+/**
+ * Holds the board and has utility functions
+ */
 public class MagneticCaveGameBoard {
 
     public static final int END_WINNING_VALUE = 0;
@@ -118,6 +121,10 @@ public class MagneticCaveGameBoard {
         // Check that the marker is at last position and check that last position is the winning value
         return marker == this.getBoardSize() -1
                 && this.board[marker] == END_WINNING_VALUE;
+    }
+
+    public boolean isSolvable() {
+        return false;
     }
 
     /**

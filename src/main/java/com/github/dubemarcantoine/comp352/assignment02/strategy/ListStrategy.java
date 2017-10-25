@@ -65,7 +65,7 @@ public class ListStrategy implements GameStrategy {
      * @return
      */
     private boolean solve(int treeIndex, int marker) {
-        System.out.println("solve index=" + treeIndex + "   marker="+marker);
+        System.out.println("index=" + treeIndex + "   marker="+marker);
         // Get markers at left and right of current marker
         Integer markerRight = this.gameBoard.getMarkerAfterMove(MoveDirection.RIGHT, marker);
         if (this.gameBoard.isGameSolved(markerRight)) {
@@ -85,6 +85,7 @@ public class ListStrategy implements GameStrategy {
         Integer rightMarkerValue = this.gameBoard.getMarkerValue(markerRight);
         // Make sure that the marker has never been navigated to
         if (rightMarkerValue != null && !this.isMarkerNavigated(treeIndex, markerRight)) {
+            System.out.println("Going right with marker value="+rightMarkerValue);
             // Solve with new marker if right value at marker was in bound
             if (this.solve(this.indexAtRight(treeIndex), markerRight)) {
                 return true;
@@ -95,6 +96,7 @@ public class ListStrategy implements GameStrategy {
         Integer leftMarkerValue = this.gameBoard.getMarkerValue(markerLeft);
         // Make sure that the marker has never been navigated to
         if (leftMarkerValue != null && !this.isMarkerNavigated(treeIndex, markerLeft)) {
+            System.out.println("Going left with marker value="+leftMarkerValue);
             // Solve with new marker if left value at marker was in bound
             if (this.solve(this.indexAtLeft(treeIndex), markerLeft)) {
                 return true;
