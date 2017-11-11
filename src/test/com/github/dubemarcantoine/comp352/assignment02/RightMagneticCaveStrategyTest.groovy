@@ -38,5 +38,7 @@ class RightMagneticCaveStrategyTest extends Specification {
         0           | false      | [4, 10, 1, 1, 1, 1, 10, 0]
         0           | false      | [0, 0, 0, 0, 0]
         3           | false      | [0, 0, 0, 0, 0]
+        0           | true       | [10, 4, 3, 6, 5, 7, 0]
+        0           | false      | [10, 8, 3, 6, 2, 8, 0]
     }
 }
