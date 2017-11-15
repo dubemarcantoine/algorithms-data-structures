@@ -1,28 +1,38 @@
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.TreeSet;
 
 public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
 
-    private E[] tree;
+    /**
+     * The number of elements in the tree
+     */
     private int size;
-    private int height;
+
+    /**
+     * The root element of the tree
+     */
+    private Node<E> root;
 
     public A3BSTree() {
-        this.tree = (E[]) new Object[0];
         this.size = 0;
-        this.height = 0;
+        this.root = null;
     }
 
     @Override
     public void add(E e) {
+        // Base case
         if (this.size() == 0) {
-            this.tree[0] = e;
+            this.root = new Node<>(e);
+        } else {
+            this.addRec(e, this.root);
         }
+
+        this.size++;
     }
 
     @Override
     public void addAll(Collection<? extends E> c) {
+        this.size += c.size();
     }
 
     @Override
@@ -37,25 +47,58 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
 
     @Override
     public int height() {
-        return 0;
+        if (this.root == null) {
+            return 0;
+        }
+        return this.heightRec(this.root);
     }
 
     @Override
     public int size() {
-        return 0;
+        return this.size;
     }
 
-    private int leftIndex(int parentIndex) {
-        return parentIndex * 2 + 1;
+    private void addRec(E e, Node<E> currentNode) {
+        if (e.compareTo(currentNode.getValue()) <= 0) {
+            if (currentNode.getLeft() != null) {
+                this.addRec(e, currentNode.getLeft());
+            } else {
+                currentNode.setLeft(new Node<>(e));
+            }
+        } else {
+            if (currentNode.getRight() != null) {
+                this.addRec(e, currentNode.getRight());
+            } else {
+                currentNode.setRight(new Node<>(e));
+            }
+        }
     }
 
-    private int rightIndex(int parentIndex) {
-        return parentIndex * 2 + 2;
+    private int heightRec(Node<E> node) {
+        if (node == null) {
+            return -1;
+        }
+
+        return Math.max(this.heightRec(node.getLeft()), this.heightRec(node.getRight())) + 1;
     }
 
-    private void increaseCapacity() {
-        int newCapacity = (int)Math.pow(2, this.height);
-        E[] newTree = (E[]) new Object[newCapacity];
-
+    public static void main(String[] args) {
+        Tree<Long> t = new A3BSTree<>();
+        System.out.println(t.height());
+        t.add(10l);
+        System.out.println(t.height());
+        t.add(10l);
+        System.out.println(t.height());
+        t.add(1l);
+        System.out.println(t.height());
+        t.add(4l);
+        System.out.println(t.height());
+        t.add(3l);
+        System.out.println(t.height());
+        t.add(11l);
+        t.add(0l);
+        t.add(-1l);
+        t.add(-2l);
+        System.out.println(t.height());
     }
 }
