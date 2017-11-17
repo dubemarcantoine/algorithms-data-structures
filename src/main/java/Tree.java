@@ -23,10 +23,10 @@ public interface Tree<E> {
      * Removes the specified element from this set if it is present.
      * (if more than one were present, removes only the first one)
      *
-     * @param o object to remove
+     * @param e object to remove
      * @return true if this tree contained the element
      */
-    public boolean remove(Object o);
+    public boolean remove(E e);
 
     /**
      * Returns an iterator over the elements in this tree in ascending order

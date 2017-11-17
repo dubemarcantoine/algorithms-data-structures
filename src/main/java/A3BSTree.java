@@ -32,12 +32,19 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
 
     @Override
     public void addAll(Collection<? extends E> c) {
-        this.size += c.size();
+        for (E e : c) {
+            this.add(e);
+        }
     }
 
     @Override
-    public boolean remove(Object o) {
-        return false;
+    public boolean remove(E e) {
+        Node<E> node = this.find(e, this.root);
+        if (node == null) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -56,6 +63,11 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
     @Override
     public int size() {
         return this.size;
+    }
+
+    @Override
+    public String toString() {
+        return BTreePrinter.printNode(this.root);
     }
 
     private void addRec(E e, Node<E> currentNode) {
@@ -82,23 +94,32 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
         return Math.max(this.heightRec(node.getLeft()), this.heightRec(node.getRight())) + 1;
     }
 
+    private Node<E> find(E e, Node<E> currentNode) {
+        if (currentNode == null) {
+            return null;
+        }
+        if (e.compareTo(currentNode.getValue()) == 0) {
+            return currentNode;
+        } else if (e.compareTo(currentNode.getValue()) < 0) {
+            return this.find(e, currentNode.getLeft());
+        } else {
+            return this.find(e, currentNode.getRight());
+        }
+    }
+
     public static void main(String[] args) {
         Tree<Long> t = new A3BSTree<>();
         System.out.println(t.height());
         t.add(10l);
         System.out.println(t.height());
-        t.add(10l);
-        System.out.println(t.height());
+        t.add(5l);
+        t.add(8l);
+        t.add(7l);
+        t.add(6l);
         t.add(1l);
-        System.out.println(t.height());
-        t.add(4l);
-        System.out.println(t.height());
         t.add(3l);
-        System.out.println(t.height());
-        t.add(11l);
-        t.add(0l);
-        t.add(-1l);
-        t.add(-2l);
-        System.out.println(t.height());
+        t.add(2l);
+        System.out.println(t.remove(2l));
+        System.out.println(t.toString());
     }
 }

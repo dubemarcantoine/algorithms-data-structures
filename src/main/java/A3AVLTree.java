@@ -21,8 +21,8 @@ public class A3AVLTree<E> implements Tree<E> {
     }
 
     @Override
-    public boolean remove(Object o) {
-        return tree.remove(o);
+    public boolean remove(E e) {
+        return tree.remove(e);
     }
 
     @Override
