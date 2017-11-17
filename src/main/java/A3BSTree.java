@@ -39,11 +39,11 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
 
     @Override
     public boolean remove(E e) {
-        Node<E> node = this.find(e, this.root);
-        if (node == null) {
+        Node<E> removedNode = this.removeRec(e, this.root);
+        if (removedNode == null) {
             return false;
         }
-
+        this.root = removedNode;
         return true;
     }
 
@@ -86,25 +86,41 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
         }
     }
 
+    private Node<E> removeRec(E e, Node<E> currentNode) {
+        if (currentNode == null) {
+            return null;
+        }
+        if (e.compareTo(currentNode.getValue()) < 0) {
+            currentNode.setLeft(this.removeRec(e, currentNode.getLeft()));
+        } else if (e.compareTo(currentNode.getValue()) > 0) {
+            currentNode.setRight(this.removeRec(e, currentNode.getRight()));
+        } else {
+            // One children nodes
+            if (currentNode.getLeft() == null) {
+                return currentNode.getRight();
+            } else if (currentNode.getRight() == null) {
+                return currentNode.getLeft();
+            }
+            // 2 children nodes
+            currentNode.setValue(this.getMinValueRightSubTree(currentNode.getRight()));
+            currentNode.setRight(this.removeRec(currentNode.getValue(), currentNode.getRight()));
+        }
+        return currentNode;
+    }
+
+    private E getMinValueRightSubTree(Node<E> node) {
+        if (node.getLeft() == null) {
+            return node.getValue();
+        }
+        return this.getMinValueRightSubTree(node.getLeft());
+    }
+
     private int heightRec(Node<E> node) {
         if (node == null) {
             return -1;
         }
 
         return Math.max(this.heightRec(node.getLeft()), this.heightRec(node.getRight())) + 1;
-    }
-
-    private Node<E> find(E e, Node<E> currentNode) {
-        if (currentNode == null) {
-            return null;
-        }
-        if (e.compareTo(currentNode.getValue()) == 0) {
-            return currentNode;
-        } else if (e.compareTo(currentNode.getValue()) < 0) {
-            return this.find(e, currentNode.getLeft());
-        } else {
-            return this.find(e, currentNode.getRight());
-        }
     }
 
     public static void main(String[] args) {
@@ -119,7 +135,11 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
         t.add(1l);
         t.add(3l);
         t.add(2l);
-        System.out.println(t.remove(2l));
+        t.add(9l);
+        t.add(100000000000l);
+        t.remove(10l);
+        t.remove(5l);
+        t.remove(100000000000l);
         System.out.println(t.toString());
     }
 }
