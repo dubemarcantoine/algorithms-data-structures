@@ -49,7 +49,7 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return new BinaryTreeInorderIterator<>(this.root);
     }
 
     @Override
@@ -130,10 +130,15 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
         t.add(70l);
         t.add(60l);
         t.add(10l);
+        t.add(5l);
         t.add(30l);
         t.add(20l);
         t.add(90l);
         t.add(75l);
         System.out.println(t.toString());
+        Iterator<Long> it = t.iterator();
+        while (it.hasNext()) {
+            System.out.println(it.next());
+        }
     }
 }
