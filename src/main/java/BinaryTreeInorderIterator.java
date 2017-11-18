@@ -18,18 +18,25 @@ public class BinaryTreeInorderIterator<E extends Comparable<E>> implements Itera
 
     @Override
     public E next() {
-        // Goes left until it finds a null. Going left will give the smallest value
-        while (this.currentNode != null) {
-            this.parentNodes.push(this.currentNode);
-            this.currentNode = this.currentNode.getLeft();
-        }
+        this.stackSmallest(this.currentNode);
 
         // Get the last node in the stack which is our smallest value
         this.currentNode = this.parentNodes.pop();
-        E value = this.currentNode.getValue();
         // From the last node, go right
+        E value = this.currentNode.getValue();
         this.currentNode = this.currentNode.getRight();
 
         return value;
+    }
+
+    /**
+     * Goes left until it finds a null. Going left will give the smallest value
+     * @param node
+     */
+    private void stackSmallest(Node<E> node) {
+        if (node != null) {
+            this.parentNodes.push(node);
+            this.stackSmallest(node.getLeft());
+        }
     }
 }

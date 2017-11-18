@@ -6,8 +6,8 @@ public class TreeSort {
      * @param a an array to sort
      */
     public static <E> void sort(E[] a) {
-        Tree<E> tree = new A3AVLTree<>();
-        sort(tree, a);
+//        Tree<E> tree = new A3AVLTree<>();
+//        sort(tree, a);
     }
 
     /**

@@ -4,17 +4,19 @@ import java.util.List;
 
 /**
  * Used to print a binary tree in a formatted way.
- * Inspired from https://stackoverflow.com/a/4973083
+ * This class is useful to debug the binary tree
+ *
+ * Heavily inspired from https://stackoverflow.com/a/4973083
  */
 public class BTreePrinter {
 
     static String printNode(Node root) {
         int maxLevel = maxLevel(root);
         StringBuffer stringBuffer = new StringBuffer();
-        return printNodeInternal(Collections.singletonList(root), 1, maxLevel, stringBuffer).toString();
+        return printNodeRec(Collections.singletonList(root), 1, maxLevel, stringBuffer).toString();
     }
 
-    private static StringBuffer printNodeInternal(List<Node> nodes, int level, int maxLevel, StringBuffer stringBuffer) {
+    private static StringBuffer printNodeRec(List<Node> nodes, int level, int maxLevel, StringBuffer stringBuffer) {
         if (nodes.isEmpty() || isAllElementsNull(nodes)) {
             return stringBuffer;
         }
@@ -70,7 +72,7 @@ public class BTreePrinter {
             stringBuffer.append("\n");
         }
 
-        return printNodeInternal(newNodes, level + 1, maxLevel, stringBuffer);
+        return printNodeRec(newNodes, level + 1, maxLevel, stringBuffer);
     }
 
     private static void printWhitespaces(int count, StringBuffer stringBuffer) {
