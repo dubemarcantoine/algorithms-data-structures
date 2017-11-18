@@ -198,19 +198,4 @@ public class A3AVLTree<E extends Comparable<E>> implements Tree<E> {
         }
         return this.getMinValueRightSubTree(node.getLeft());
     }
-
-    public static void main(String[] args) {
-        Tree<String> t = new A3AVLTree<>();
-        t.add("hello");
-        t.add("my");
-        t.add("name");
-        t.add("is");
-        t.add("marc");
-        t.add("lol");
-        t.add("zzz");
-        Iterator<String> it = t.iterator();
-        while (it.hasNext()) {
-            System.out.println(it.next());
-        }
-    }
 }

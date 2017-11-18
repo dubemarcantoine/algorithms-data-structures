@@ -22,3 +22,8 @@
 hs_err_pid*
 
 .idea/
+.gradle
+build/
+trees.jar
+
+testrun-*

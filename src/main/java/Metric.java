@@ -26,6 +26,7 @@ public class Metric {
     public Metric(String name, int size) {
         this.name = name;
         this.size = size;
+        this.error = "";
     }
 
     /**
@@ -68,5 +69,10 @@ public class Metric {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%1$-15s %2$,15d ms %3$s", this.name, this.timeInMillis, this.error);
     }
 }

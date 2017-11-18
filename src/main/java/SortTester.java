@@ -1,3 +1,6 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class SortTester {
@@ -5,7 +8,8 @@ public class SortTester {
     public static void main(String[] args) {
         Map<Integer, ArrayList<Metric>> metrics = new LinkedHashMap<>();
 
-        for (int nthPower=1; nthPower<7; nthPower++) {
+        final int MAX_POWER_OF_10 = 8;
+        for (int nthPower=1; nthPower<MAX_POWER_OF_10; nthPower++) {
             int dataSetSize = (int)Math.pow(10, nthPower);
             Integer dataSet[] = new Integer[dataSetSize];
 
@@ -31,7 +35,23 @@ public class SortTester {
             metrics.get(dataSetSize).add(prepareSort(new A3BSTree<Integer>(), dataSet, "BST"));
         }
 
-        System.out.println();
+        // Format the results to be written
+        List<String> resultStrings = new ArrayList<>();
+        metrics.forEach((size, list) -> {
+            resultStrings.add(String.format("SIZE = %1$,d", size));
+            list.forEach(metric -> resultStrings.add(metric.toString()));
+            resultStrings.add("");
+        });
+
+        // Write results
+        final String OUTPUT_FILENAME = "testrun-" + System.currentTimeMillis() + ".txt";
+        try {
+            Files.write(Paths.get(OUTPUT_FILENAME), resultStrings);
+            System.out.println("Wrote results to: " + OUTPUT_FILENAME);
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -50,7 +70,7 @@ public class SortTester {
             metric.start();
             TreeSort.sort(tree, copiedDataSet);
         } catch (StackOverflowError e) {
-            metric.setError(e.getMessage());
+            metric.setError(e.toString());
         } finally {
             //Stop the timer
             metric.stop();

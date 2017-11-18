@@ -122,39 +122,4 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
 
         return Math.max(this.heightRec(node.getLeft()), this.heightRec(node.getRight())) + 1;
     }
-
-    public static void main(String[] args) {
-        Tree<String> t = new A3BSTree<>();
-        t.add("h");
-        t.add("a");
-        t.add("b");
-        t.add("c");
-        t.add("d");
-        t.add("e");
-        t.add("f");
-        t.add("g");
-        t.add("i");
-        t.add("j");
-        t.add("k");
-        t.add("l");
-        t.add("m");
-        t.add("n");
-        t.add("o");
-        t.add("p");
-        t.add("q");
-        t.add("r");
-        t.add("s");
-        t.add("t");
-        t.add("u");
-        t.add("v");
-        t.add("w");
-        t.add("x");
-        t.add("y");
-        t.add("z");
-//        System.out.println(t.toString());
-        Iterator<String> it = t.iterator();
-        while (it.hasNext()) {
-            System.out.println(it.next());
-        }
-    }
 }

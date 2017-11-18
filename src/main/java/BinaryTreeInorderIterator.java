@@ -1,6 +1,7 @@
 import java.util.Iterator;
 import java.util.Stack;
 
+
 public class BinaryTreeInorderIterator<E extends Comparable<E>> implements Iterator<E> {
 
     private Node<E> currentNode;
