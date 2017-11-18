@@ -34,9 +34,9 @@ public class BinaryTreeInorderIterator<E extends Comparable<E>> implements Itera
      * @param node
      */
     private void stackSmallest(Node<E> node) {
-        if (node != null) {
+        while (node != null) {
             this.parentNodes.push(node);
-            this.stackSmallest(node.getLeft());
+            node = node.getLeft();
         }
     }
 }
