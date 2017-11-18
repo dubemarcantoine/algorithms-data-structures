@@ -1,6 +1,5 @@
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.TreeSet;
 
 public class A3AVLTree<E extends Comparable<E>> implements Tree<E> {
 
@@ -34,8 +33,13 @@ public class A3AVLTree<E extends Comparable<E>> implements Tree<E> {
 
     @Override
     public boolean remove(E e) {
+        Node<E> removedNode = this.removeRec(e, this.root);
+        if (removedNode == null) {
+            return false;
+        }
+        this.root = removedNode;
         this.size--;
-        return false;
+        return true;
     }
 
     @Override
@@ -136,6 +140,65 @@ public class A3AVLTree<E extends Comparable<E>> implements Tree<E> {
         return b;
     }
 
+    private Node<E> removeRec(E e, Node<E> currentNode) {
+        if (currentNode == null) {
+            return null;
+        }
+        if (e.compareTo(currentNode.getValue()) < 0) {
+            currentNode.setLeft(this.removeRec(e, currentNode.getLeft()));
+        } else if (e.compareTo(currentNode.getValue()) > 0) {
+            currentNode.setRight(this.removeRec(e, currentNode.getRight()));
+        } else {
+            // One children nodes
+            if (currentNode.getLeft() == null) {
+                return currentNode.getRight();
+            } else if (currentNode.getRight() == null) {
+                return currentNode.getLeft();
+            }
+            // 2 children nodes
+            currentNode.setValue(this.getMinValueRightSubTree(currentNode.getRight()));
+            currentNode.setRight(this.removeRec(currentNode.getValue(), currentNode.getRight()));
+        }
+
+        // Update the height
+        currentNode.updateDepth();
+
+        int balance = currentNode.getBalance();
+        // Left
+        if (balance > 1) {
+            // Left
+            if (currentNode.getLeft() != null && currentNode.getLeft().getBalance() >= 0) {
+                return this.rightRotate(currentNode);
+            }
+            // Right
+            else {
+                currentNode.setLeft(this.leftRotate(currentNode.getLeft()));
+                return this.rightRotate(currentNode);
+            }
+        }
+        // Right
+        else if (balance < -1) {
+            // Left
+            if (currentNode.getRight() != null && currentNode.getRight().getBalance() > 0) {
+                currentNode.setRight(this.rightRotate(currentNode.getRight()));
+                return this.leftRotate(currentNode);
+            }
+            // Right
+            else {
+                return this.leftRotate(currentNode);
+            }
+        }
+
+        return currentNode;
+    }
+
+    private E getMinValueRightSubTree(Node<E> node) {
+        if (node.getLeft() == null) {
+            return node.getValue();
+        }
+        return this.getMinValueRightSubTree(node.getLeft());
+    }
+
     public static void main(String[] args) {
         Tree<Long> t = new A3AVLTree<>();
         t.add(10l);
@@ -147,7 +210,12 @@ public class A3AVLTree<E extends Comparable<E>> implements Tree<E> {
         t.add(500l);
         t.add(501l);
         t.add(502l);
-
+        t.add(13l);
+        t.add(503l);
+        t.add(504l);
+        t.add(505l);
+        t.add(506l);
+        t.remove(11l);
         System.out.println(t.toString());
     }
 }
