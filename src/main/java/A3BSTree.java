@@ -124,19 +124,35 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
     }
 
     public static void main(String[] args) {
-        Tree<Long> t = new A3BSTree<>();
-        t.add(50l);
-        t.add(80l);
-        t.add(70l);
-        t.add(60l);
-        t.add(10l);
-        t.add(5l);
-        t.add(30l);
-        t.add(20l);
-        t.add(90l);
-        t.add(75l);
-        System.out.println(t.toString());
-        Iterator<Long> it = t.iterator();
+        Tree<String> t = new A3BSTree<>();
+        t.add("h");
+        t.add("a");
+        t.add("b");
+        t.add("c");
+        t.add("d");
+        t.add("e");
+        t.add("f");
+        t.add("g");
+        t.add("i");
+        t.add("j");
+        t.add("k");
+        t.add("l");
+        t.add("m");
+        t.add("n");
+        t.add("o");
+        t.add("p");
+        t.add("q");
+        t.add("r");
+        t.add("s");
+        t.add("t");
+        t.add("u");
+        t.add("v");
+        t.add("w");
+        t.add("x");
+        t.add("y");
+        t.add("z");
+//        System.out.println(t.toString());
+        Iterator<String> it = t.iterator();
         while (it.hasNext()) {
             System.out.println(it.next());
         }

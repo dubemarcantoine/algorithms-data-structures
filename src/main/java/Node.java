@@ -33,15 +33,18 @@ public class Node<E extends Comparable<E>> {
         this.right = right;
         this.value = value;
 
-        if (this.right == null && this.left == null) {
-            this.setDepth(1);
-        } else if (this.right == null){
-            this.setDepth(this.left.depth + 1);
-        } else if(this.left == null) {
-            this.setDepth(this.right.depth + 1);
-        } else {
-            this.setDepth(Math.max(left.getDepth(), right.getDepth()) + 1);
-        }
+        this.depth = 1;
+    }
+
+    /**
+     * Returns if the tree is balanced or not.
+     * It is balanced if the value returned is bounded by [-1, 1]
+     * @return
+     */
+    public int getBalance() {
+        int leftDepth = this.getLeft() != null ? this.getLeft().getDepth() : 0;
+        int rightDepth = this.getRight() != null ? this.getRight().getDepth() : 0;
+        return leftDepth - rightDepth;
     }
 
     public Node<E> getLeft() {
@@ -74,5 +77,11 @@ public class Node<E extends Comparable<E>> {
 
     public void setDepth(int depth) {
         this.depth = depth;
+    }
+
+    public void updateDepth() {
+        int leftDepth = this.getLeft() != null ? this.getLeft().getDepth() : 0;
+        int rightDepth = this.getRight() != null ? this.getRight().getDepth() : 0;
+        this.depth = Math.max(leftDepth, rightDepth) + 1;
     }
 }
