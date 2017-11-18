@@ -200,22 +200,17 @@ public class A3AVLTree<E extends Comparable<E>> implements Tree<E> {
     }
 
     public static void main(String[] args) {
-        Tree<Long> t = new A3AVLTree<>();
-        t.add(10l);
-        t.add(11l);
-        t.add(12l);
-        t.add(14l);
-        t.add(5l);
-        t.add(50l);
-        t.add(500l);
-        t.add(501l);
-        t.add(502l);
-        t.add(13l);
-        t.add(503l);
-        t.add(504l);
-        t.add(505l);
-        t.add(506l);
-        t.remove(11l);
-        System.out.println(t.toString());
+        Tree<String> t = new A3AVLTree<>();
+        t.add("hello");
+        t.add("my");
+        t.add("name");
+        t.add("is");
+        t.add("marc");
+        t.add("lol");
+        t.add("zzz");
+        Iterator<String> it = t.iterator();
+        while (it.hasNext()) {
+            System.out.println(it.next());
+        }
     }
 }
