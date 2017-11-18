@@ -26,7 +26,6 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
         } else {
             this.addRec(e, this.root);
         }
-
         this.size++;
     }
 
@@ -44,6 +43,7 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
             return false;
         }
         this.root = removedNode;
+        this.size--;
         return true;
     }
 
@@ -125,21 +125,15 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
 
     public static void main(String[] args) {
         Tree<Long> t = new A3BSTree<>();
-        System.out.println(t.height());
+        t.add(50l);
+        t.add(80l);
+        t.add(70l);
+        t.add(60l);
         t.add(10l);
-        System.out.println(t.height());
-        t.add(5l);
-        t.add(8l);
-        t.add(7l);
-        t.add(6l);
-        t.add(1l);
-        t.add(3l);
-        t.add(2l);
-        t.add(9l);
-        t.add(100000000000l);
-        t.remove(10l);
-        t.remove(5l);
-        t.remove(100000000000l);
+        t.add(30l);
+        t.add(20l);
+        t.add(90l);
+        t.add(75l);
         System.out.println(t.toString());
     }
 }
