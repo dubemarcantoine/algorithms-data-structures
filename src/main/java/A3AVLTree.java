@@ -13,6 +13,11 @@ public class A3AVLTree<E extends Comparable<E>> implements Tree<E> {
      */
     private Node<E> root;
 
+    /**
+     * Used internally to know if a node was removed or not
+     */
+    private boolean removed;
+
     public A3AVLTree() {
         this.size = 0;
         this.root = null;
@@ -34,9 +39,10 @@ public class A3AVLTree<E extends Comparable<E>> implements Tree<E> {
     @Override
     public boolean remove(E e) {
         Node<E> removedNode = this.removeRec(e, this.root);
-        if (removedNode == null) {
+        if (!this.removed) {
             return false;
         }
+        this.removed = false;
         this.root = removedNode;
         this.size--;
         return true;
@@ -51,7 +57,7 @@ public class A3AVLTree<E extends Comparable<E>> implements Tree<E> {
         if (this.root == null) {
             return 0;
         }
-        return this.heightRec(this.root);
+        return this.root.getDepth() - 1;
     }
 
     @Override
@@ -106,14 +112,11 @@ public class A3AVLTree<E extends Comparable<E>> implements Tree<E> {
         return currentNode;
     }
 
-    private int heightRec(Node<E> node) {
-        if (node == null) {
-            return -1;
-        }
-
-        return Math.max(this.heightRec(node.getLeft()), this.heightRec(node.getRight())) + 1;
-    }
-
+    /**
+     * Balances the tree by doing a right rotation
+     * @param a
+     * @return
+     */
     private Node<E> rightRotate(Node<E> a) {
         Node<E> b = a.getLeft();
         Node<E> c = b.getRight();
@@ -127,6 +130,11 @@ public class A3AVLTree<E extends Comparable<E>> implements Tree<E> {
         return b;
     }
 
+    /**
+     * Balances the tree by doing a left rotation
+     * @param c
+     * @return
+     */
     private Node<E> leftRotate(Node<E> c) {
         Node<E> b = c.getRight();
         Node<E> a = b.getLeft();
@@ -140,15 +148,23 @@ public class A3AVLTree<E extends Comparable<E>> implements Tree<E> {
         return b;
     }
 
+    /**
+     * Removes recursively
+     * @param e
+     * @param currentNode
+     * @return
+     */
     private Node<E> removeRec(E e, Node<E> currentNode) {
         if (currentNode == null) {
             return null;
         }
+        // Same as binary search tree
         if (e.compareTo(currentNode.getValue()) < 0) {
             currentNode.setLeft(this.removeRec(e, currentNode.getLeft()));
         } else if (e.compareTo(currentNode.getValue()) > 0) {
             currentNode.setRight(this.removeRec(e, currentNode.getRight()));
         } else {
+            this.removed = true;
             // One children nodes
             if (currentNode.getLeft() == null) {
                 return currentNode.getRight();
@@ -160,6 +176,7 @@ public class A3AVLTree<E extends Comparable<E>> implements Tree<E> {
             currentNode.setRight(this.removeRec(currentNode.getValue(), currentNode.getRight()));
         }
 
+        // Balance the tree
         // Update the height
         currentNode.updateDepth();
 

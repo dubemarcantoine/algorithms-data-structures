@@ -47,6 +47,15 @@ public class Node<E extends Comparable<E>> {
         return leftDepth - rightDepth;
     }
 
+    /**
+     * Updates the depth of a node based on left and right depths
+     */
+    public void updateDepth() {
+        int leftDepth = this.getLeft() != null ? this.getLeft().getDepth() : 0;
+        int rightDepth = this.getRight() != null ? this.getRight().getDepth() : 0;
+        this.depth = Math.max(leftDepth, rightDepth) + 1;
+    }
+
     public Node<E> getLeft() {
         return left;
     }
@@ -77,11 +86,5 @@ public class Node<E extends Comparable<E>> {
 
     public void setDepth(int depth) {
         this.depth = depth;
-    }
-
-    public void updateDepth() {
-        int leftDepth = this.getLeft() != null ? this.getLeft().getDepth() : 0;
-        int rightDepth = this.getRight() != null ? this.getRight().getDepth() : 0;
-        this.depth = Math.max(leftDepth, rightDepth) + 1;
     }
 }

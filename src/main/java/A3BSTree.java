@@ -13,6 +13,11 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
      */
     private Node<E> root;
 
+    /**
+     * Used internally to know if a node was removed or not
+     */
+    private boolean removed;
+
     public A3BSTree() {
         this.size = 0;
         this.root = null;
@@ -39,9 +44,10 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
     @Override
     public boolean remove(E e) {
         Node<E> removedNode = this.removeRec(e, this.root);
-        if (removedNode == null) {
+        if (!this.removed) {
             return false;
         }
+        this.removed = false;
         this.root = removedNode;
         this.size--;
         return true;
@@ -57,7 +63,7 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
         if (this.root == null) {
             return 0;
         }
-        return this.heightRec(this.root);
+        return this.root.getDepth() - 1;
     }
 
     @Override
@@ -84,6 +90,9 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
                 currentNode.setRight(new Node<>(e));
             }
         }
+
+        // Update the height
+        currentNode.updateDepth();
     }
 
     private Node<E> removeRec(E e, Node<E> currentNode) {
@@ -95,6 +104,7 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
         } else if (e.compareTo(currentNode.getValue()) > 0) {
             currentNode.setRight(this.removeRec(e, currentNode.getRight()));
         } else {
+            this.removed = true;
             // One children nodes
             if (currentNode.getLeft() == null) {
                 return currentNode.getRight();
@@ -105,6 +115,10 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
             currentNode.setValue(this.getMinValueRightSubTree(currentNode.getRight()));
             currentNode.setRight(this.removeRec(currentNode.getValue(), currentNode.getRight()));
         }
+
+        // Update the height
+        currentNode.updateDepth();
+
         return currentNode;
     }
 
