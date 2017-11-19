@@ -48,6 +48,7 @@ class A3AVLTreeTest extends Specification {
         add | newTreeSize | newTreeHeight | values
         16  | 9           | 3             | [5, 10, 15, 12, 14, 7, 6, 3]
         2   | 4           | 2             | [1, 2, 3]
+        -8  | 6           | 2             | [3, 4, 5, 6, 2]
         10  | 1           | 0             | []
     }
 
@@ -69,10 +70,11 @@ class A3AVLTreeTest extends Specification {
         sortedIndices == sortedValues
 
         where:
-        values                       | sortedValues
-        [5, 10, 15, 12, 14, 7, 6, 3] | [3, 5, 6, 7, 10, 12, 14, 15]
-        [1, 2, 3]                    | [1, 2, 3]
-        [3, 2, 1]                    | [1, 2, 3]
-        []                           | []
+        values                                                                     | sortedValues
+        [5, 10, 15, 12, 14, 7, 6, 3]                                               | [3, 5, 6, 7, 10, 12, 14, 15]
+        [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, 9, -10] | [-10, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 10]
+        [1, 2, 3]                                                                  | [1, 2, 3]
+        [3, 2, 1]                                                                  | [1, 2, 3]
+        []                                                                         | []
     }
 }

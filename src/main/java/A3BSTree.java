@@ -76,6 +76,11 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
         return BTreePrinter.printNode(this.root);
     }
 
+    /**
+     * Adds a node recursively
+     * @param e
+     * @param currentNode
+     */
     private void addRec(E e, Node<E> currentNode) {
         if (e.compareTo(currentNode.getValue()) <= 0) {
             if (currentNode.getLeft() != null) {
@@ -95,6 +100,12 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
         currentNode.updateDepth();
     }
 
+    /**
+     * Removes nodes recursively
+     * @param e
+     * @param currentNode
+     * @return
+     */
     private Node<E> removeRec(E e, Node<E> currentNode) {
         if (currentNode == null) {
             return null;
@@ -122,18 +133,15 @@ public class A3BSTree<E extends Comparable<E>> implements Tree<E> {
         return currentNode;
     }
 
+    /**
+     * Gets the min value of a node
+     * @param node
+     * @return
+     */
     private E getMinValueRightSubTree(Node<E> node) {
         if (node.getLeft() == null) {
             return node.getValue();
         }
         return this.getMinValueRightSubTree(node.getLeft());
-    }
-
-    private int heightRec(Node<E> node) {
-        if (node == null) {
-            return -1;
-        }
-
-        return Math.max(this.heightRec(node.getLeft()), this.heightRec(node.getRight())) + 1;
     }
 }
