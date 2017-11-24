@@ -22,16 +22,8 @@
 hs_err_pid*
 
 .idea/
-.gradle/
-*.iml
-*.ipr
-*.iws
-
-logs/
-
-.idea/
+.gradle
 build/
-.gradle/
-out/
-*.iml
->>>>>>> a3-master
+trees.jar
+
+testrun-*
