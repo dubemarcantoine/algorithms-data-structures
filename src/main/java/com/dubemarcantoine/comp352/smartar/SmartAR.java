@@ -2,11 +2,16 @@ package com.dubemarcantoine.comp352.smartar;
 
 import java.util.List;
 
-public class SmartAR<K, T> implements SmartARInternal<K, T>  {
+public class SmartAR<K, V> implements SmartARInternal<K, V>  {
 
     private int threshold;
 
-    private int keyLength;
+    private int maxKeyLength;
+
+    private SmartARInternal<K, V> currentAlgo;
+
+    public SmartAR() {
+    }
 
     /**
      * Defines when a listing should be implemented with a data structure such as a Tree,
@@ -24,7 +29,7 @@ public class SmartAR<K, T> implements SmartARInternal<K, T>  {
      * @param keyLength
      */
     public void setKeyLength(int keyLength) {
-        this.keyLength = keyLength;
+        this.maxKeyLength = keyLength;
     }
 
     /**
@@ -44,8 +49,8 @@ public class SmartAR<K, T> implements SmartARInternal<K, T>  {
     }
 
     @Override
-    public void add(K key, T value) {
-
+    public void add(K key, V value) {
+        key = (K)this.truncateKey((String) key);
     }
 
     @Override
@@ -54,7 +59,7 @@ public class SmartAR<K, T> implements SmartARInternal<K, T>  {
     }
 
     @Override
-    public List<T> getValues(K key) {
+    public List<V> getValues(K key) {
         return null;
     }
 
@@ -69,7 +74,14 @@ public class SmartAR<K, T> implements SmartARInternal<K, T>  {
     }
 
     @Override
-    public List<T> previousValues(K key) {
+    public List<V> previousValues(K key) {
         return null;
+    }
+
+    private String truncateKey(String key) {
+        if (key.length() > this.maxKeyLength) {
+            return key.substring(0, this.maxKeyLength);
+        }
+        return key;
     }
 }

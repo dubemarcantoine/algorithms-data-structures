@@ -1,16 +1,15 @@
 package com.dubemarcantoine.comp352.smartar;
 
 import java.util.List;
-import java.util.TreeMap;
 
-public interface SmartARInternal<K, T> {
+public interface SmartARInternal<K, V> {
 
     /**
      * Add an entry for the given key and value
      * @param key
      * @param value
      */
-    void add(K key, T value);
+    void add(K key, V value);
 
     /**
      * Remove the entry for the given key
@@ -23,7 +22,7 @@ public interface SmartARInternal<K, T> {
      * @param key
      * @return
      */
-    List<T> getValues(K key);
+    List<V> getValues(K key);
 
     /**
      * Return the key for the predecessor of key
@@ -44,5 +43,5 @@ public interface SmartARInternal<K, T> {
      * @param key
      * @return
      */
-    List<T> previousValues(K key);
+    List<V> previousValues(K key);
 }

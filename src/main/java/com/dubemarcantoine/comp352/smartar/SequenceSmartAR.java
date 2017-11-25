@@ -2,10 +2,10 @@ package com.dubemarcantoine.comp352.smartar;
 
 import java.util.List;
 
-public class SequenceSmartAR<K, T> implements SmartARInternal<K, T> {
+public class SequenceSmartAR<K, V> implements SmartARInternal<K, V> {
 
     @Override
-    public void add(K key, T value) {
+    public void add(K key, V value) {
 
     }
 
@@ -15,7 +15,7 @@ public class SequenceSmartAR<K, T> implements SmartARInternal<K, T> {
     }
 
     @Override
-    public List<T> getValues(K key) {
+    public List<V> getValues(K key) {
         return null;
     }
 
@@ -30,7 +30,7 @@ public class SequenceSmartAR<K, T> implements SmartARInternal<K, T> {
     }
 
     @Override
-    public List<T> previousValues(K key) {
+    public List<V> previousValues(K key) {
         return null;
     }
 }
