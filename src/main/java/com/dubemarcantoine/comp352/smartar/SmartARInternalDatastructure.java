@@ -2,46 +2,51 @@ package com.dubemarcantoine.comp352.smartar;
 
 import java.util.List;
 
-public interface SmartARInternal<K, V> {
+public interface SmartARInternalDatastructure<K, V> {
 
     /**
      * Add an entry for the given key and value
      * @param key
-     * @param value
+     * @param data
      */
-    void add(K key, V value);
+    boolean add(K key, Data<K, V> data);
 
     /**
      * Remove the entry for the given key
-     * @param key
+     * @param subKey
+     * @param fullKey
      */
-    void remove(K key);
+    boolean remove(K subKey, K fullKey);
 
     /**
      * Return the values of the given key
-     * @param key
+     * @param subKey
+     * @param fullKey
      * @return
      */
-    List<V> getValues(K key);
+    List<V> getValues(K subKey, K fullKey);
 
     /**
      * Return the key for the predecessor of key
-     * @param key
+     * @param subKey
+     * @param fullKey
      * @return
      */
-    K prevKey(K key);
+    K prevKey(K subKey, K fullKey);
 
     /**
      * Return the key for the successor of key
-     * @param key
+     * @param subKey
+     * @param fullKey
      * @return
      */
-    K nextKey(K key);
+    K nextKey(K subKey, K fullKey);
 
     /**
      * Returns a sequence (sorted in reverse chronological order) of values
-     * @param key
+     * @param subKey
+     * @param fullKey
      * @return
      */
-    List<V> previousValues(K key);
+    List<V> previousValues(K subKey, K fullKey);
 }

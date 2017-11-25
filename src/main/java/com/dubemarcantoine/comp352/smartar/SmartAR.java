@@ -2,13 +2,13 @@ package com.dubemarcantoine.comp352.smartar;
 
 import java.util.List;
 
-public class SmartAR<K, V> implements SmartARInternal<K, V>  {
+public class SmartAR<K, V>  {
 
     private int threshold;
 
     private int maxKeyLength;
 
-    private SmartARInternal<K, V> currentAlgo;
+    private SmartARInternalDatastructure currentAlgo;
 
     public SmartAR() {
     }
@@ -48,32 +48,26 @@ public class SmartAR<K, V> implements SmartARInternal<K, V>  {
         return null;
     }
 
-    @Override
     public void add(K key, V value) {
-        key = (K)this.truncateKey((String) key);
+
     }
 
-    @Override
     public void remove(K key) {
 
     }
 
-    @Override
     public List<V> getValues(K key) {
         return null;
     }
 
-    @Override
     public K prevKey(K key) {
         return null;
     }
 
-    @Override
     public K nextKey(K key) {
         return null;
     }
 
-    @Override
     public List<V> previousValues(K key) {
         return null;
     }
