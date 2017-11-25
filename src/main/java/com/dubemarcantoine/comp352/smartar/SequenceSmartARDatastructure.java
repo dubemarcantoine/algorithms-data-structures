@@ -1,13 +1,30 @@
 package com.dubemarcantoine.comp352.smartar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SequenceSmartARDatastructure<K, V> implements SmartARInternalDatastructure<K, V> {
 
+    private List<Data<K, List<Data<K, List<Data<K, V>>>>>> values;
+
+    public SequenceSmartARDatastructure() {
+        this.values = new ArrayList<>();
+    }
 
     @Override
-    public boolean add(K key, Data<K, V> data) {
-        return false;
+    public List<K> allKeys() {
+        return null;
+    }
+
+    @Override
+    public boolean add(K subKey, Data<K, V> data) {
+        boolean overwrite = false;
+        this.values.forEach(dataList -> {
+            if (dataList.getKey().equals(subKey)) {
+
+            }
+        });
+        return overwrite;
     }
 
     @Override

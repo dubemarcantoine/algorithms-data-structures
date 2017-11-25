@@ -4,6 +4,8 @@ import java.util.List;
 
 public interface SmartARInternalDatastructure<K, V> {
 
+    List<K> allKeys();
+
     /**
      * Add an entry for the given key and value
      * @param key

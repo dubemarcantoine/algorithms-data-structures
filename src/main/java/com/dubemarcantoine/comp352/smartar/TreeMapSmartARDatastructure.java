@@ -15,6 +15,13 @@ public class TreeMapSmartARDatastructure<K, V> implements SmartARInternalDatastr
     }
 
     @Override
+    public List<K> allKeys() {
+        List<K> keys = new ArrayList<>();
+        this.treeMap.forEach((subKey, subMap) -> keys.addAll(subMap.keySet()));
+        return keys;
+    }
+
+    @Override
     public boolean add(K subKey, Data<K, V> data) {
         boolean overwrites = false;
         TreeMap<K, List<Data<K, V>>> subTreeMap = this.treeMap.get(subKey);
@@ -170,5 +177,8 @@ public class TreeMapSmartARDatastructure<K, V> implements SmartARInternalDatastr
         System.out.println(treeMapSmartARDatastructure.nextKey("123456", "1234569"));
         System.out.println(treeMapSmartARDatastructure.prevKey("123456", "1234567"));
         System.out.println(treeMapSmartARDatastructure.prevKey("123455", "12345550"));
+        for (String s : treeMapSmartARDatastructure.allKeys()) {
+            System.out.println(s);
+        }
     }
 }
