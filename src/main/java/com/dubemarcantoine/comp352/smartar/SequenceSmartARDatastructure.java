@@ -16,6 +16,7 @@ public class SequenceSmartARDatastructure<K extends Comparable, V> implements Sm
 
     @Override
     public List<K> allKeys() {
+        // Parallel streams used as the order does not matter since the structure is unordered
         List<K> keys = this.values
                 .parallelStream()
                 .map(subKeyList -> subKeyList.getValue()
@@ -24,6 +25,7 @@ public class SequenceSmartARDatastructure<K extends Comparable, V> implements Sm
                         .collect(Collectors.toList()))
                 .flatMap(list -> list.parallelStream())
                 .collect(Collectors.toList());
+        // Sort the list by keys
         Collections.sort(keys);
         return keys;
     }
@@ -53,6 +55,8 @@ public class SequenceSmartARDatastructure<K extends Comparable, V> implements Sm
             subList.get().getValue().add(sameKeyData);
             return false;
         }
+        // All lists exist, simply insert the data
+        // Set the last element of the list as deleted before the insertion
         boolean overwrite = this.setLastAsDeleted(subDataList.get().getValue());
         subDataList.get().getValue().add(data);
         return overwrite;
@@ -75,20 +79,7 @@ public class SequenceSmartARDatastructure<K extends Comparable, V> implements Sm
 
     @Override
     public List<V> getValues(K subKey, K fullKey) {
-        Optional<Data<K, List<Data<K, List<Data<K, V>>>>>> subList = this.getSubKeyList(subKey);
-        if (!subList.isPresent()) {
-            return null;
-        }
-
-        Optional<Data<K, List<Data<K, V>>>> subDataList = this.getKeyList(fullKey, subList.get().getValue());
-        if (!subDataList.isPresent()) {
-            return null;
-        }
-
-        return subDataList.get().getValue()
-                .stream()
-                .map(data -> data.getValue())
-                .collect(Collectors.toList());
+        return getValues(subKey, fullKey, false);
     }
 
     @Override
@@ -113,7 +104,7 @@ public class SequenceSmartARDatastructure<K extends Comparable, V> implements Sm
 
     @Override
     public List<V> previousValues(K subKey, K fullKey) {
-        return null;
+        return this.getValues(subKey, fullKey, true);
     }
 
     /**
@@ -131,6 +122,31 @@ public class SequenceSmartARDatastructure<K extends Comparable, V> implements Sm
             }
         }
         return deleted;
+    }
+
+    /**
+     * Returns the values for a key
+     * @param subKey
+     * @param fullKey
+     * @param getOnlyDeleted
+     * @return
+     */
+    private List<V> getValues(K subKey, K fullKey, boolean getOnlyDeleted) {
+        Optional<Data<K, List<Data<K, List<Data<K, V>>>>>> subList = this.getSubKeyList(subKey);
+        if (!subList.isPresent()) {
+            return null;
+        }
+
+        Optional<Data<K, List<Data<K, V>>>> subDataList = this.getKeyList(fullKey, subList.get().getValue());
+        if (!subDataList.isPresent()) {
+            return null;
+        }
+
+        return subDataList.get().getValue()
+                .stream()
+                .filter(data -> !getOnlyDeleted || data.isDeleted())
+                .map(data -> data.getValue())
+                .collect(Collectors.toList());
     }
 
     /**

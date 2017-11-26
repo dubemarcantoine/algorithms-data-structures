@@ -53,86 +53,63 @@ public class TreeMapSmartARDatastructure<K, V> implements SmartARInternalDatastr
 
     @Override
     public boolean remove(K subKey, K fullKey) {
-        boolean deleted = false;
         TreeMap<K, List<Data<K, V>>> subTreeMap = this.treeMap.get(subKey);
-        if (subTreeMap != null) {
-            List<Data<K, V>> values = subTreeMap.get(fullKey);
-            if (values != null) {
-                deleted = this.setLastAsDeleted(values);
-            }
+        if (subTreeMap == null) {
+            return false;
         }
-        return deleted;
+        List<Data<K, V>> values = subTreeMap.get(fullKey);
+        if (values == null) {
+            return false;
+        }
+        return this.setLastAsDeleted(values);
     }
 
     @Override
     public List<V> getValues(K subKey, K fullKey) {
-        List<V> values = null;
-        TreeMap<K, List<Data<K, V>>> subTreeMap = this.treeMap.get(subKey);
-        if (subTreeMap != null) {
-            List<Data<K, V>> keyValues = subTreeMap.get(fullKey);
-            if (keyValues != null) {
-                values = keyValues.stream()
-                            .map(data -> data.getValue())
-                            .collect(Collectors.toList());
-            }
-        }
-        return values;
+        return this.getValues(subKey, fullKey, false);
     }
 
     @Override
     public K prevKey(K subKey, K fullKey) {
-        K previous = null;
         TreeMap<K, List<Data<K, V>>> subTreeMap = this.treeMap.get(subKey);
-        if (subTreeMap != null) {
-            // Get the previous key in the sub tree map
-            previous = subTreeMap.lowerKey(fullKey);
-            // If there is no previous key, get the previous sub tree in the tree map
-            if (previous == null) {
-                K previousSubTreeMapKey = this.treeMap.lowerKey(subKey);
-                if (previousSubTreeMapKey != null) {
-                    TreeMap<K, List<Data<K, V>>> previousSubTree = this.treeMap.get(previousSubTreeMapKey);
-                    previous = previousSubTree.lastKey();
-                }
-            }
+        if (subTreeMap == null) {
+            return null;
         }
-        return previous;
+        // Get the previous key in the sub tree map
+        K previous = subTreeMap.lowerKey(fullKey);
+        if (previous != null) {
+            return previous;
+        }
+        K previousSubTreeMapKey = this.treeMap.lowerKey(subKey);
+        if (previousSubTreeMapKey == null) {
+            return null;
+        }
+        TreeMap<K, List<Data<K, V>>> previousSubTree = this.treeMap.get(previousSubTreeMapKey);
+        return previousSubTree.lastKey();
     }
 
     @Override
     public K nextKey(K subKey, K fullKey) {
-        K next = null;
         TreeMap<K, List<Data<K, V>>> subTreeMap = this.treeMap.get(subKey);
-        if (subTreeMap != null) {
-            // Get the next key in the sub tree map
-            next = subTreeMap.higherKey(fullKey);
-            // If there is no previous key, get the next sub tree in the tree map
-            if (next == null) {
-                K nextSubTreeMapKey = this.treeMap.higherKey(subKey);
-                if (nextSubTreeMapKey != null) {
-                    TreeMap<K, List<Data<K, V>>> nextSubTree = this.treeMap.get(nextSubTreeMapKey);
-                    next = nextSubTree.firstKey();
-                }
-            }
+        if (subTreeMap == null) {
+            return null;
         }
-        return next;
+        // Get the previous key in the sub tree map
+        K next = subTreeMap.higherKey(fullKey);
+        if (next != null) {
+            return next;
+        }
+        K nextSubTreeMapKey = this.treeMap.higherKey(subKey);
+        if (nextSubTreeMapKey == null) {
+            return null;
+        }
+        TreeMap<K, List<Data<K, V>>> nextSubTree = this.treeMap.get(nextSubTreeMapKey);
+        return nextSubTree.lastKey();
     }
 
     @Override
     public List<V> previousValues(K subKey, K fullKey) {
-        List<V> values = null;
-        TreeMap<K, List<Data<K, V>>> subTreeMap = this.treeMap.get(subKey);
-        if (subTreeMap != null) {
-            List<Data<K, V>> keyValues = subTreeMap.get(fullKey);
-            if (keyValues != null) {
-                values = new ArrayList<>();
-                // Loop will skip on last element if it is currently registered
-                int startIndex = keyValues.get(keyValues.size() - 1).isDeleted() ? 1 : 2;
-                for (int i = keyValues.size() - startIndex; i >= 0; i--) {
-                    values.add(keyValues.get(i).getValue());
-                }
-            }
-        }
-        return values;
+        return this.getValues(subKey, fullKey, true);
     }
 
     /**
@@ -150,6 +127,28 @@ public class TreeMapSmartARDatastructure<K, V> implements SmartARInternalDatastr
             }
         }
         return deleted;
+    }
+
+    /**
+     * Returns the values for a key
+     * @param subKey
+     * @param fullKey
+     * @param getOnlyDeleted
+     * @return
+     */
+    private List<V> getValues(K subKey, K fullKey, boolean getOnlyDeleted) {
+        TreeMap<K, List<Data<K, V>>> subTreeMap = this.treeMap.get(subKey);
+        if (subTreeMap == null) {
+            return null;
+        }
+        List<Data<K, V>> keyValues = subTreeMap.get(fullKey);
+        if (keyValues == null) {
+            return null;
+        }
+        return keyValues.stream()
+                .filter(data -> !getOnlyDeleted || data.isDeleted())
+                .map(data -> data.getValue())
+                .collect(Collectors.toList());
     }
 
     public static void main(String[] args) {
@@ -176,9 +175,10 @@ public class TreeMapSmartARDatastructure<K, V> implements SmartARInternalDatastr
         System.out.println(treeMapSmartARDatastructure.nextKey("123456", "1234568"));
         System.out.println(treeMapSmartARDatastructure.nextKey("123456", "1234569"));
         System.out.println(treeMapSmartARDatastructure.prevKey("123456", "1234567"));
+        System.out.println(treeMapSmartARDatastructure.nextKey("123457", "1234579"));
         System.out.println(treeMapSmartARDatastructure.prevKey("123455", "12345550"));
-        for (String s : treeMapSmartARDatastructure.allKeys()) {
-            System.out.println(s);
-        }
+        treeMapSmartARDatastructure.getValues("123456", "1234567").forEach(d -> System.out.println(d));
+        System.out.println(treeMapSmartARDatastructure.getValues("123456", "1234567").size());
+        treeMapSmartARDatastructure.previousValues("123456", "1234568").forEach(d -> System.out.println(d));
     }
 }
