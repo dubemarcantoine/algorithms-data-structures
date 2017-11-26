@@ -1,9 +1,11 @@
 package com.dubemarcantoine.comp352.smartar;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 public class SequenceSmartARDatastructure<K, V> implements SmartARInternalDatastructure<K, V> {
 
@@ -20,40 +22,65 @@ public class SequenceSmartARDatastructure<K, V> implements SmartARInternalDatast
 
     @Override
     public boolean add(K subKey, Data<K, V> data) {
-        AtomicBoolean overwrite = new AtomicBoolean(false);
-        AtomicBoolean valueInserted = new AtomicBoolean(false);
-        // Search for the list with the subkey
-        this.values.forEach(keyDataList -> {
-            if (keyDataList.getKey().equals(subKey)) {
-                // Search for the list with the key
-                keyDataList.getValue().forEach(dataList -> {
-                    if (dataList.getKey().equals(data.getKey())) {
-                        overwrite.set(this.setLastAsDeleted(dataList.getValue()));
-                        dataList.getValue().add(data);
-                        valueInserted.set(true);
-                    }
-                });
-                // The key does not exist in the subkey list, create the list
-                List<Data<K, V>> list = new ArrayList<>();
-                list.add(data);
-                keyDataList.getValue().add(new Data<>(data.getKey(), list));
-            }
-        });
-        Optional<Data<K, List<Data<K, List<Data<K, V>>>>>> subList = this.values.stream()
-                .filter(keyDataList -> keyDataList.getKey().equals(subKey))
-                .findFirst();
-        subList.isPresent();
-        return overwrite.get();
+        // Check if the subkey exists
+        Optional<Data<K, List<Data<K, List<Data<K, V>>>>>> subList = this.getSubKeyList(subKey);
+        // If not, create the full structure
+        if (!subList.isPresent()) {
+            List<Data<K, V>> list = new ArrayList<>();
+            list.add(data);
+            List<Data<K, List<Data<K, V>>>> sameKeyList = new ArrayList<>();
+            Data<K, List<Data<K, V>>> sameKeyData = new Data<>(data.getKey(), list);
+            sameKeyList.add(sameKeyData);
+            Data<K, List<Data<K, List<Data<K, V>>>>> sameSubKeyData = new Data<>(subKey, sameKeyList);
+            this.values.add(sameSubKeyData);
+            return false;
+        }
+        // Check if the full key exists
+        Optional<Data<K, List<Data<K, V>>>> subDataList = this.getKeyList(data.getKey(), subList.get().getValue());
+        // If not exists, create the sub structure
+        if (!subDataList.isPresent()) {
+            List<Data<K, V>> list = new ArrayList<>();
+            list.add(data);
+            Data<K, List<Data<K, V>>> sameKeyData = new Data<>(data.getKey(), list);
+            subList.get().getValue().add(sameKeyData);
+            return false;
+        }
+        boolean overwrite = this.setLastAsDeleted(subDataList.get().getValue());
+        subDataList.get().getValue().add(data);
+        return overwrite;
     }
 
     @Override
     public boolean remove(K subKey, K fullKey) {
-        return true;
+        Optional<Data<K, List<Data<K, List<Data<K, V>>>>>> subList = this.getSubKeyList(subKey);
+        if (!subList.isPresent()) {
+            return false;
+        }
+
+        Optional<Data<K, List<Data<K, V>>>> subDataList = this.getKeyList(fullKey, subList.get().getValue());
+        if (!subDataList.isPresent()) {
+            return false;
+        }
+
+        return this.setLastAsDeleted(subDataList.get().getValue());
     }
 
     @Override
     public List<V> getValues(K subKey, K fullKey) {
-        return null;
+        Optional<Data<K, List<Data<K, List<Data<K, V>>>>>> subList = this.getSubKeyList(subKey);
+        if (!subList.isPresent()) {
+            return null;
+        }
+
+        Optional<Data<K, List<Data<K, V>>>> subDataList = this.getKeyList(fullKey, subList.get().getValue());
+        if (!subDataList.isPresent()) {
+            return null;
+        }
+
+        return subDataList.get().getValue()
+                .stream()
+                .map(data -> data.getValue())
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -86,5 +113,17 @@ public class SequenceSmartARDatastructure<K, V> implements SmartARInternalDatast
             }
         }
         return deleted;
+    }
+
+    private Optional<Data<K, List<Data<K, List<Data<K, V>>>>>> getSubKeyList(K subKey) {
+        return this.values.stream()
+                .filter(subKeyDataList -> subKey.equals(subKeyDataList.getKey()))
+                .findFirst();
+    }
+
+    private Optional<Data<K, List<Data<K, V>>>> getKeyList(K key, List<Data<K, List<Data<K, V>>>> subList) {
+        return subList.stream()
+                .filter(keyDataList -> key.equals(keyDataList.getKey()))
+                .findFirst();
     }
 }
