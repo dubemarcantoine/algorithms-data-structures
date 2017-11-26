@@ -1,13 +1,12 @@
 package com.dubemarcantoine.comp352.smartar;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
-public class SequenceSmartARDatastructure<K, V> implements SmartARInternalDatastructure<K, V> {
+public class SequenceSmartARDatastructure<K extends Comparable, V> implements SmartARInternalDatastructure<K, V> {
 
     private List<Data<K, List<Data<K, List<Data<K, V>>>>>> values;
 
@@ -17,7 +16,16 @@ public class SequenceSmartARDatastructure<K, V> implements SmartARInternalDatast
 
     @Override
     public List<K> allKeys() {
-        return null;
+        List<K> keys = this.values
+                .parallelStream()
+                .map(subKeyList -> subKeyList.getValue()
+                        .parallelStream()
+                        .map(keyList -> keyList.getKey())
+                        .collect(Collectors.toList()))
+                .flatMap(list -> list.parallelStream())
+                .collect(Collectors.toList());
+        Collections.sort(keys);
+        return keys;
     }
 
     @Override
@@ -85,11 +93,21 @@ public class SequenceSmartARDatastructure<K, V> implements SmartARInternalDatast
 
     @Override
     public K prevKey(K subKey, K fullKey) {
+        List<K> sortedKeys = this.allKeys();
+        int keyIndex = sortedKeys.indexOf(fullKey);
+        if (keyIndex > 0) {
+            return sortedKeys.get(keyIndex - 1);
+        }
         return null;
     }
 
     @Override
     public K nextKey(K subKey, K fullKey) {
+        List<K> sortedKeys = this.allKeys();
+        int keyIndex = sortedKeys.indexOf(fullKey);
+        if (keyIndex < sortedKeys.size() - 1) {
+            return sortedKeys.get(keyIndex + 1);
+        }
         return null;
     }
 
@@ -115,15 +133,46 @@ public class SequenceSmartARDatastructure<K, V> implements SmartARInternalDatast
         return deleted;
     }
 
+    /**
+     * Returns the sub-data list with the sub-key
+     * @param subKey
+     * @return
+     */
     private Optional<Data<K, List<Data<K, List<Data<K, V>>>>>> getSubKeyList(K subKey) {
         return this.values.stream()
                 .filter(subKeyDataList -> subKey.equals(subKeyDataList.getKey()))
                 .findFirst();
     }
 
+    /**
+     * Returns the data list with the key
+     * @param key
+     * @param subList
+     * @return
+     */
     private Optional<Data<K, List<Data<K, V>>>> getKeyList(K key, List<Data<K, List<Data<K, V>>>> subList) {
         return subList.stream()
                 .filter(keyDataList -> key.equals(keyDataList.getKey()))
                 .findFirst();
+    }
+
+    public static void main(String[] args) {
+        SequenceSmartARDatastructure<String, String> s = new SequenceSmartARDatastructure<>();
+        System.out.println(s.add("1", new Data<>("11", "")));
+        System.out.println(s.add("1", new Data<>("12", "")));
+        System.out.println(s.add("1", new Data<>("13", "")));
+        System.out.println(s.add("1", new Data<>("14", "")));
+        System.out.println(s.add("1", new Data<>("14", "")));
+        System.out.println(s.add("0", new Data<>("00", "")));
+        System.out.println(s.add("0", new Data<>("01", "")));
+        System.out.println(s.add("0", new Data<>("04", "")));
+        System.out.println(s.add("0", new Data<>("03", "")));
+        System.out.println(s.add("0", new Data<>("02", "")));
+        System.out.println(s.nextKey("0", "01"));
+        System.out.println(s.nextKey("0", "00"));
+        System.out.println(s.prevKey("0", "00"));
+        System.out.println(s.nextKey("1", "14"));
+        System.out.println(s.nextKey("1", "13"));
+        s.allKeys().forEach(k -> System.out.println(k));
     }
 }
