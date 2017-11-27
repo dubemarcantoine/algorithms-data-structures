@@ -24,7 +24,6 @@ public class TreeMapSmartARDatastructure<K, V> implements SmartARInternalDatastr
 
     @Override
     public boolean add(K subKey, Data<K, V> data) {
-        boolean overwrites = false;
         TreeMap<K, List<Data<K, V>>> subTreeMap = this.treeMap.get(subKey);
         // Subkey has never been used
         if (subTreeMap == null) {
@@ -33,21 +32,20 @@ public class TreeMapSmartARDatastructure<K, V> implements SmartARInternalDatastr
             values.add(data);
             subTreeMap.put(data.getKey(), values);
             this.treeMap.put(subKey, subTreeMap);
+            return false;
         }
-        else {
-            List<Data<K, V>> values = subTreeMap.get(data.getKey());
-            // Full key has never been used
-            if (values == null) {
-                values = new ArrayList<>();
-                values.add(data);
-                subTreeMap.put(data.getKey(), values);
-            } else {
-                // Set the last value in the list as deleted
-                overwrites = this.setLastAsDeleted(values);
-                // Insert the data in the list
-                values.add(data);
-            }
+        List<Data<K, V>> values = subTreeMap.get(data.getKey());
+        // Full key has never been used
+        if (values == null) {
+            values = new ArrayList<>();
+            values.add(data);
+            subTreeMap.put(data.getKey(), values);
+            return false;
         }
+        // Set the last value in the list as deleted
+        boolean overwrites = this.setLastAsDeleted(values);
+        // Insert the data in the list
+        values.add(data);
 
         return overwrites;
     }
@@ -105,7 +103,7 @@ public class TreeMapSmartARDatastructure<K, V> implements SmartARInternalDatastr
             return null;
         }
         TreeMap<K, List<Data<K, V>>> nextSubTree = this.treeMap.get(nextSubTreeMapKey);
-        return nextSubTree.lastKey();
+        return nextSubTree.firstKey();
     }
 
     @Override

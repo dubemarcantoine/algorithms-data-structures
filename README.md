@@ -171,22 +171,21 @@ Algorithm add(subKey, key, data)
         data the data to be inserted
     Output: boolean if the key is new or not
     
-    subList <- getSubKeyList(subKey)
-    IF !subList THEN
-        dataList <- [data]
-        sameKeyData <- Data(fullKey, dataList)
-        sameKeyList <- [sameKeyData]
-        sameSubKeyData <- Data(subKey, sameKeyList)
-        values.add(sameSubKeyData)
+    subTreeMap <- treeMap.get(subKey)
+    IF !subTreeMap THEN
+        subTreeMap <- [:]
+        values <- [data]
+        subTreeMap.put(key, values)
+        treeMap.put(subKey, subTreeMap)
+        return false        
+    values <- subTreeMap.get(key)
+    IF !values THEN
+        subTreeMap <- [:]
+        values <- [data]
+        subTreeMap.put(key, values)
         return false
-    subDataList <- getKeyList(key, subList)
-    IF !subDataList THEN
-        dataList <- [data]
-        sameKeyData <- Data(fullKey, dataList)
-        subList.add(sameKeyData)
-        return false
-    overwrite = setLastAsDeleted(subDataList)
-    subDataList.add(data)
+    overwrite = setLastAsDeleted(values)
+    values.add(data)
     return overwrite
 ```
 
@@ -199,13 +198,13 @@ Algorithm remove(subKey, fullKey)
     Output:
         boolean if the data was removed or not
     
-    subList <- getSubKeyList(subKey)
-    IF !subList THEN
+    subTreeMap <- treeMap.get(subKey)
+    IF !subTreeMap THEN
         return false
-    subDataList <- getKeyList(key, subList)
-    IF !subDataList THEN
+    values <- subTreeMap.get(key)
+    IF !values THEN
         return false
-    return setLastAsDeleted(subDataList)
+    return setLastAsDeleted(values)
 ```
 
 ##### getValues(subKey, fullKey)
@@ -229,11 +228,17 @@ Algorithm prevKey(subKey, fullKey)
     Output:
         The previous key
     
-    keys <- allKeys()
-    keyIndex <- keys.indexOf(fullKey)
-    IF keyIndex > 0 THEN
-        return keys[keyIndex -1]
-    return null
+    subTreeMap <- treeMap.get(subKey)
+    IF !subTreeMap THEN
+        return null
+    previous <- subTreeMap.lowerKey(fullKey)
+    IF previous THEN
+        return previous
+    previousSubTreeMapKey <- treeMap.lowerKey(subKey)
+    IF !previousSubTreeMapKey THEN
+        return null
+    previousSubTree <- treeMap.get(previousSubTreeMapKey)
+    return previousSubTree.lastKey()
 ```
 
 ##### nextKey(subKey, fullKey)
@@ -245,11 +250,17 @@ Algorithm nextKey(subKey, fullKey)
     Output:
         The next key
     
-    keys <- allKeys()
-    keyIndex <- keys.indexOf(fullKey)
-    IF keyIndex < keys.length - 1 THEN
-        return keys[keyIndex + 1]
-    return null
+    subTreeMap <- treeMap.get(subKey)
+    IF !subTreeMap THEN
+        return null
+    next <- subTreeMap.higherKey(fullKey)
+    IF previous THEN
+        return previous
+    nextSubTreeMapKey <- treeMap.higherKey(subKey)
+    IF !nextSubTreeMapKey THEN
+        return null
+    nextSubTree <- treeMap.get(nextSubTreeMapKey)
+    return nextSubTree.firstKey()
 ```
 
 ##### previousValues(subKey, fullKey)
@@ -260,9 +271,33 @@ Algorithm previousValues(subKey, fullKey)
         key the full key
     Output:
         The values
-    
+        
     values <- getValues(subKey, fullKey, true)
-    reverse(values) // From order of insertion to counter order of insertion
+    IF !values THEN
+        return null
+    reverse(values)
+    return values
+```
+
+##### getValues(subKey, fullKey, getOnlyDeleted)
+```
+Algorithm getValues(subKey, fullKey, getOnlyDeleted)
+    Input:
+        subKey the subkey that was from the key
+        key the full key
+        getOnlyDeleted boolean to only get deleted values
+    Output:
+        The values
+    
+    subTreeMap <- treeMap.get(subKey)
+    IF !subTreeMap THEN
+        return null
+    values <- subTreeMap.get(key)
+    IF !values THEN
+        return null
+    FOR data IN values
+    IF !getOnlyDeleted AND data.isDeleted THEN
+        values.add(data)
     return values
 ```
 
