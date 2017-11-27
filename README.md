@@ -302,4 +302,32 @@ Algorithm getValues(subKey, fullKey, getOnlyDeleted)
 ```
 
 
-#### Discuss how both the time and space complexity change for each of the methods above if the underlying structure of your SmartAR is an array or a linked list? 
+### Discuss how both the time and space complexity change for each of the methods above if the underlying structure of your SmartAR is an array or a linked list?
+In the case of `SequenceSmartARDatastructure` which uses a sequence, the space complexity would not change as it would still be O(n).
+
+The time complexity would change for the insert. Before insertion, we have to find the key which takes O(n) time. The insertion in an array is O(1)
+and O(n) in a linkedlist. An insert thus takes O(n) with the array, but would take O(n^2) with the LinkedList.
+
+For remove, nothing would change as the remove function of the underlying datastructures is not used. SmartAR uses soft deletes which just toggles a boolean in O(1).
+
+### Run with data files output
+```
+Parsing file: ar_test_file0.txt
+Finished parsing file in 23ms
+Finished adding 1000 data in 78ms
+Parsing file: ar_test_file1.txt
+Finished parsing file in 5ms
+Finished adding 10000 data in 21ms
+Parsing file: ar_test_file2.txt
+Finished parsing file in 21ms
+Finished adding 100000 data in 253ms
+Parsing file: ar_test_file3.txt
+Finished parsing file in 210ms
+Finished adding 1000000 data in 1772ms
+Parsing file: ar_test_file4.txt
+Finished parsing file in 1028ms
+Finished adding 10000001 data in 14334ms
+```
+
+### Test Cases
+Test cases are located in `SmartARTest` class.

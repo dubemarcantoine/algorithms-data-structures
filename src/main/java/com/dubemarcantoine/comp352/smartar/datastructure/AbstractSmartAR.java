@@ -134,6 +134,10 @@ public abstract class AbstractSmartAR<K extends Comparable, V>  {
         return this.internalDatastructure.previousValues(this.getSubkey(key), key);
     }
 
+    public int getActiveSize() {
+        return this.activeSize;
+    }
+
     /**
      * Changes the internal datastructure if the total number of items is
      * passed the set threshold
