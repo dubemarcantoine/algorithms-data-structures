@@ -310,6 +310,20 @@ and O(n) in a linkedlist. An insert thus takes O(n) with the array, but would ta
 
 For remove, nothing would change as the remove function of the underlying datastructures is not used. SmartAR uses soft deletes which just toggles a boolean in O(1).
 
+### Design Decisions
+The 2 internal datastructures used are the ArrayList and the TreeMap.
+The ArrayList is used for smaller datasets as it uses less memory. However, it's execution time is longer than
+the TreeMap implementation.
+
+The ArrayList was used as it keeps the order of insertion which is useful to get the previous values.
+
+Due to the nature of the assignment where we had to take into account maximum key lengths, but still be able to find the original key if it was truncated,
+2 searches are done per operation. The first one is to find with the subKey (the truncated key) and the second on e is to find the data with the full key.
+Using TreeMaps was a good decision for this as the get and add operations are perfomed in O(logn) compared to O(n) for the ArrayList.
+
+When designing the TreeMap datastructure, my assumption was that the run time would grow about linearly to the number of keys that are inserted.
+From the output below, this assumption has proven to be true. Inserting 10 000 000 records takes 10x more time than inserting 1 000 000 records for instance.
+
 ### Run with data files output
 ```
 Parsing file: ar_test_file0.txt
