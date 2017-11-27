@@ -51,4 +51,12 @@ public interface SmartARInternalDatastructure<K, V> {
      * @return
      */
     List<V> previousValues(K subKey, K fullKey);
+
+    /**
+     * Checks if a key exists
+     * @param subKey
+     * @param fullKey
+     * @return
+     */
+    boolean contains(K subKey, K fullKey);
 }

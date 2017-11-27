@@ -3,6 +3,8 @@ package com.dubemarcantoine.comp352.smartar.datastructure.implementation;
 import com.dubemarcantoine.comp352.smartar.Car;
 import com.dubemarcantoine.comp352.smartar.datastructure.AbstractSmartAR;
 
+import java.util.*;
+
 /**
  * Smart AR structure meant to hold a String as key and any value
  * @param <K extends String>
@@ -13,6 +15,11 @@ public class SmartAR<K extends String, V> extends AbstractSmartAR<K, V> {
     private final int MIN_KEY_LENGTH = 6;
     private final int MAX_KEY_LENGTH = 12;
     private final int DEFAULT_KEY_LENGTH = 6;
+
+    private final char[] ALPHANUMERIC_CHARS = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+            "abcdefghijklmnopqrstuvwxyz" +
+            "0123456789")
+            .toCharArray();
 
     protected int maxKeyLength;
 
@@ -54,25 +61,42 @@ public class SmartAR<K extends String, V> extends AbstractSmartAR<K, V> {
         this.maxKeyLength = keyLength;
     }
 
-    public static void main(String[] args) {
-        SmartAR<String, Car> smartAR = new SmartAR<>(100, 6);
-        smartAR.add("1234567", new Car("1234567"));
-        for (int i=0; i< 100; i++) {
-            smartAR.add("1234567", new Car("1234567"));
+    /**
+     * Randomly generates a sequence containing n new non-existing keys of alphanumeric characters
+     * @param size
+     */
+    @SuppressWarnings("unchecked")
+    public Set<String> generate(int size) {
+        // Using set for uniqueness
+        Set<String> keys = new HashSet<>();
+        while (keys.size() != size) {
+            String randomString = this.randomString();
+            if (!this.internalDatastructure.contains(this.getSubkey((K)randomString), (K)randomString)) {
+                keys.add(randomString);
+            }
         }
-        smartAR.add("1234568", new Car("1234568"));
-        smartAR.add("1234569", new Car("1234568"));
-        smartAR.add("1234567", new Car("1234568"));
-        smartAR.add("1234567", new Car("1234568"));
-        smartAR.add("12345610", new Car("1234568"));
-        smartAR.add("12345611", new Car("1234568"));
-        smartAR.add("12345612", new Car("1234568"));
-        smartAR.add("1234578", new Car("1234568"));
-        smartAR.add("1234579", new Car("1234568"));
-        smartAR.add("12345710", new Car("1234568"));
-        System.out.println(smartAR.getValues("12345710"));
-        System.out.println(smartAR.getValues("1234567"));
-        System.out.println(smartAR.previousValues("1234567"));
-        System.out.println(smartAR.previousValues("12345711"));
+        return keys;
     }
+
+    /**
+     * Returns a sequence (sorted in reverse chronological order) of cars
+     * (previously) registered with the given key (license plate).
+     * @param key
+     * @return
+     */
+    public List<V> previousCars(K key) {
+        return this.previousValues(key);
+    }
+
+    private String randomString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        Random ran = new Random();
+
+        for (int i=0; i<12; i++) {
+            int pos = ran.nextInt(ALPHANUMERIC_CHARS.length - 1);
+            stringBuilder.append(ALPHANUMERIC_CHARS[pos]);
+        }
+        return stringBuilder.toString();
+    }
+
 }

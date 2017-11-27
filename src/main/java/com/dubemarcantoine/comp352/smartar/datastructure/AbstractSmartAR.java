@@ -64,14 +64,6 @@ public abstract class AbstractSmartAR<K extends Comparable, V>  {
     }
 
     /**
-     * Randomly generates a sequence containing n new non-existing keys of alphanumeric characters
-     * @param size
-     */
-    public void generate(int size) {
-
-    }
-
-    /**
      * Return all keys as a sorted sequence (lexicographic order)
      * @return
      */
@@ -147,15 +139,15 @@ public abstract class AbstractSmartAR<K extends Comparable, V>  {
      * passed the set threshold
      */
     protected void changeStructureIfPassedThreshold() {
-        if (this.totalSize > this.threshold) {
-            SmartARInternalDatastructure<K, V> newInternalDatastructure = new TreeMapSmartARDatastructure<>();
-            List<K> keys = this.internalDatastructure.allKeys();
+        if (this.totalSize == this.threshold) {
+            SmartARInternalDatastructure<K, V> oldDatastructure = this.internalDatastructure;
+            this.internalDatastructure = new TreeMapSmartARDatastructure<>();
+            List<K> keys = oldDatastructure.allKeys();
             keys.forEach(key -> {
                 K subKey = this.getSubkey(key);
-                List<V> values = this.internalDatastructure.getValues(subKey, key);
-                values.forEach(value -> newInternalDatastructure.add(subKey, new Data<>(key, value)));
+                List<V> values = oldDatastructure.getValues(subKey, key);
+                values.forEach(value -> this.internalDatastructure.add(subKey, new Data<>(key, value)));
             });
-            this.internalDatastructure = newInternalDatastructure;
         }
     }
 

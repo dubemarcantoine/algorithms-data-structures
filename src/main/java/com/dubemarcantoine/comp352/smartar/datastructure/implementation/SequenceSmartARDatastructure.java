@@ -114,6 +114,17 @@ public class SequenceSmartARDatastructure<K extends Comparable, V> implements Sm
         return values;
     }
 
+    @Override
+    public boolean contains(K subKey, K fullKey) {
+        Optional<Data<K, List<Data<K, List<Data<K, V>>>>>> subList = this.getSubKeyList(subKey);
+        if (!subList.isPresent()) {
+            return false;
+        }
+
+        Optional<Data<K, List<Data<K, V>>>> subDataList = this.getKeyList(fullKey, subList.get().getValue());
+        return subDataList.isPresent();
+    }
+
     /**
      * Marks the last value inserted in the value array as deleted
      * @param values
@@ -177,25 +188,5 @@ public class SequenceSmartARDatastructure<K extends Comparable, V> implements Sm
         return subList.parallelStream()
                 .filter(keyDataList -> key.equals(keyDataList.getKey()))
                 .findFirst();
-    }
-
-    public static void main(String[] args) {
-        SequenceSmartARDatastructure<String, String> s = new SequenceSmartARDatastructure<>();
-        System.out.println(s.add("1", new Data<>("11", "")));
-        System.out.println(s.add("1", new Data<>("12", "")));
-        System.out.println(s.add("1", new Data<>("13", "")));
-        System.out.println(s.add("1", new Data<>("14", "")));
-        System.out.println(s.add("1", new Data<>("14", "")));
-        System.out.println(s.add("0", new Data<>("00", "")));
-        System.out.println(s.add("0", new Data<>("01", "")));
-        System.out.println(s.add("0", new Data<>("04", "")));
-        System.out.println(s.add("0", new Data<>("03", "")));
-        System.out.println(s.add("0", new Data<>("02", "")));
-        System.out.println(s.nextKey("0", "01"));
-        System.out.println(s.nextKey("0", "00"));
-        System.out.println(s.prevKey("0", "00"));
-        System.out.println(s.nextKey("1", "14"));
-        System.out.println(s.nextKey("1", "13"));
-        s.allKeys().forEach(k -> System.out.println(k));
     }
 }

@@ -117,6 +117,16 @@ public class TreeMapSmartARDatastructure<K, V> implements SmartARInternalDatastr
         return values;
     }
 
+    @Override
+    public boolean contains(K subKey, K fullKey) {
+        TreeMap<K, List<Data<K, V>>> subTreeMap = this.treeMap.get(subKey);
+        if (subTreeMap == null) {
+            return false;
+        }
+        List<Data<K, V>> values = subTreeMap.get(fullKey);
+        return values != null;
+    }
+
     /**
      * Marks the last value inserted in the value array as deleted
      * @param values
@@ -154,36 +164,5 @@ public class TreeMapSmartARDatastructure<K, V> implements SmartARInternalDatastr
                 .filter(data -> !getOnlyDeleted || data.isDeleted())
                 .map(data -> data.getValue())
                 .collect(Collectors.toList());
-    }
-
-    public static void main(String[] args) {
-        TreeMapSmartARDatastructure<String, Object> treeMapSmartARDatastructure = new TreeMapSmartARDatastructure<>();
-        System.out.println(treeMapSmartARDatastructure.add("123456", new Data<>("1234567", new Date())));
-        System.out.println(treeMapSmartARDatastructure.add("123456", new Data<>("1234567", new Date())));
-        System.out.println(treeMapSmartARDatastructure.add("123456", new Data<>("1234567", new Date())));
-        System.out.println(treeMapSmartARDatastructure.add("123456", new Data<>("1234568", new Date())));
-        System.out.println(treeMapSmartARDatastructure.add("123456", new Data<>("1234568", new Date())));
-        System.out.println(treeMapSmartARDatastructure.add("123456", new Data<>("1234569", new Date())));
-        System.out.println(treeMapSmartARDatastructure.add("123457", new Data<>("1234578", new Date())));
-        System.out.println(treeMapSmartARDatastructure.add("123457", new Data<>("1234577", new Date())));
-        System.out.println(treeMapSmartARDatastructure.add("123457", new Data<>("1234579", new Date())));
-        System.out.println(treeMapSmartARDatastructure.add("123455", new Data<>("12345555", new Date())));
-        System.out.println(treeMapSmartARDatastructure.add("123455", new Data<>("12345550", new Date())));
-        System.out.println(treeMapSmartARDatastructure.add("123455", new Data<>("12345551", new Date())));
-        System.out.println(treeMapSmartARDatastructure.add("123455", new Data<>("12345556", new Date())));
-        System.out.println(treeMapSmartARDatastructure.remove("123456", "1234567"));
-        System.out.println(treeMapSmartARDatastructure.remove("123456", "1234567"));
-        System.out.println(treeMapSmartARDatastructure.getValues("123456", "1234567").size());
-        System.out.println(treeMapSmartARDatastructure.getValues("123456", "1234567asdf"));
-        treeMapSmartARDatastructure.getValues("123456", "1234567").forEach(d -> System.out.println(d));
-        System.out.println(treeMapSmartARDatastructure.nextKey("123456", "1234567"));
-        System.out.println(treeMapSmartARDatastructure.nextKey("123456", "1234568"));
-        System.out.println(treeMapSmartARDatastructure.nextKey("123456", "1234569"));
-        System.out.println(treeMapSmartARDatastructure.prevKey("123456", "1234567"));
-        System.out.println(treeMapSmartARDatastructure.nextKey("123457", "1234579"));
-        System.out.println(treeMapSmartARDatastructure.prevKey("123455", "12345550"));
-        treeMapSmartARDatastructure.getValues("123456", "1234567").forEach(d -> System.out.println(d));
-        System.out.println(treeMapSmartARDatastructure.getValues("123456", "1234567").size());
-        treeMapSmartARDatastructure.previousValues("123456", "1234568").forEach(d -> System.out.println(d));
     }
 }

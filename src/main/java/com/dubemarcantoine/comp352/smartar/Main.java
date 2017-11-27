@@ -25,31 +25,31 @@ public class Main {
         ClassLoader classLoader = this.getClass().getClassLoader();
         CustomTimer customTimer = new CustomTimer();
         // Loop on the test files
-        List<String> fileNames = new ArrayList<>(Arrays.asList("ar_test_file0.txt", "ar_test_file1.txt", "ar_test_file2.txt", "ar_test_file3.txt"));
+        List<String> fileNames = new ArrayList<>(Arrays.asList("ar_test_file0.txt", "ar_test_file1.txt", "ar_test_file2.txt", "ar_test_file3.txt", "ar_test_file4.txt"));
         fileNames.forEach(fileName -> {
             try {
                 // Instantiate new SmartAR
                 SmartAR<String, Car> smartAR = new SmartAR<>();
+                // Warm up!
+
                 // Load all the file lines
                 System.out.println("Parsing file: " + fileName);
                 customTimer.start();
                 File file = new File(classLoader.getResource(fileName).toURI());
-                Stream<String> fileLines = Files.lines(Paths.get(file.getPath()));
-                List<String> keys = fileLines.collect(Collectors.toList());
-                fileLines.close();
-                System.out.println("Finished parsing file in " + customTimer.stop() + "ms");
-                // Add the keys to SmartAR
-                customTimer.start();
-                AtomicInteger index = new AtomicInteger(0);
-                TreeMap<String, String> treeMap = new TreeMap<>();
-                keys.forEach(key -> {
-                    if (index.incrementAndGet() % 1000 == 0) {
-                        System.out.println("Inserted 1000 more...");
-                    }
-                    System.out.println(key);
-                    smartAR.add(key, new Car(key));
-                });
-                System.out.println("Finished adding " + keys.size() + " data in " + customTimer.stop() + "ms");
+                if (file.exists()) {
+                    Stream<String> fileLines = Files.lines(Paths.get(file.getPath()));
+                    List<String> keys = fileLines.collect(Collectors.toList());
+                    fileLines.close();
+                    System.out.println("Finished parsing file in " + customTimer.stop() + "ms");
+                    // Add the keys to SmartAR
+                    customTimer.start();
+                    keys.forEach(key -> {
+                        smartAR.add(key, new Car(key));
+                    });
+                    System.out.println("Finished adding " + keys.size() + " data in " + customTimer.stop() + "ms");
+                } else {
+                    System.out.println("The file does not exist!");
+                }
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             } catch (IOException e) {
