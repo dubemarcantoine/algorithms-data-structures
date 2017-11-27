@@ -20,9 +20,9 @@ class SmartARTest extends Specification {
         boolean isRemoved = smartAR.remove(usedValue)
         String prevKey = smartAR.prevKey(usedValue)
         String nextKey = smartAR.nextKey(usedValue)
-        List<Car> values = smartAR.getValues(usedValue)
+        List<Car> allValues = smartAR.getValues(usedValue)
         List<Car> previousCars = smartAR.previousCars(usedValue)
-        List<String> generatedKeys = smartAR.generate(generateSize)
+        Set<String> generatedKeys = smartAR.generate(generateSize)
 
         then:
         isRemoved == shouldRemoveValue
@@ -34,20 +34,20 @@ class SmartARTest extends Specification {
         nextKey == keyNextKey
 
         and:
-        getValueSize == values?.size()
+        allValues?.size() ?: 0 == getValueSize
 
         and:
-        previousValueSize == previousCars?.size()
+        previousCars?.size() ?: 0 == previousValueSize
 
         and:
-        generateSize == generatedKeys?.size()
+        generatedKeys?.size() ?: 0 == generateSize
 
         where:
         values                            | usedValue  | repeatCountValue | shouldRemoveValue | keyPrevKey | keyNextKey | getValueSize | previousValueSize | generateSize
-        ['0000000', '0000001', '0000010'] | '00000011' | 5                | true              | '0000010'  | null       | 5            | 5                 | 1000
+        ['0000000', '0000001', '0000010'] | '00000011' | 5                | true              | '0000001'  | '0000010'  | 5            | 5                 | 1000
         []                                | '0000000'  | 500              | true              | null       | null       | 500          | 500               | 1000
         ['000000']                        | '0000001'  | 1                | true              | '000000'   | null       | 1            | 1                 | 3
-        ['000000']                        | '0000001'  | 0                | false             | '000000'   | null       | 0            | 0                 | 3
+        ['000000']                        | '0000001'  | 0                | false             | null       | '000000'   | 0            | 0                 | 3
         ['000002']                        | '0000001'  | 1                | true              | null       | '000002'   | 1            | 1                 | 3
         ['000002']                        | '0000001'  | 0                | false             | null       | '000002'   | 0            | 0                 | 3
         []                                | '00000011' | 0                | false             | null       | null       | 0            | 0                 | 0

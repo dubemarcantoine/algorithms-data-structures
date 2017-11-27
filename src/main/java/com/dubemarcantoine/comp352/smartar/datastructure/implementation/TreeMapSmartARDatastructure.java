@@ -103,7 +103,7 @@ public class TreeMapSmartARDatastructure<K, V> implements SmartARInternalDatastr
             return null;
         }
         TreeMap<K, List<Data<K, V>>> nextSubTree = this.treeMap.get(nextSubTreeMapKey);
-        return nextSubTree.firstKey();
+        return nextSubTree.lastKey();
     }
 
     @Override

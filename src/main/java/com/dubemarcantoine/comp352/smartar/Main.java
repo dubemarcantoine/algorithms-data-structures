@@ -28,7 +28,6 @@ public class Main {
             try {
                 // Instantiate new SmartAR
                 SmartAR<String, Car> smartAR = new SmartAR<>();
-                // Warm up!
 
                 // Load all the file lines
                 System.out.println("Parsing file: " + fileName);
