@@ -41,8 +41,8 @@ public class SequenceSmartARDatastructure<K extends Comparable, V> implements Sm
         if (!subList.isPresent()) {
             List<Data<K, V>> list = new ArrayList<>();
             list.add(data);
-            List<Data<K, List<Data<K, V>>>> sameKeyList = new ArrayList<>();
             Data<K, List<Data<K, V>>> sameKeyData = new Data<>(data.getKey(), list);
+            List<Data<K, List<Data<K, V>>>> sameKeyList = new ArrayList<>();
             sameKeyList.add(sameKeyData);
             Data<K, List<Data<K, List<Data<K, V>>>>> sameSubKeyData = new Data<>(subKey, sameKeyList);
             this.values.add(sameSubKeyData);

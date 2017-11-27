@@ -15,6 +15,7 @@ public class SmartAR<K extends String, V> extends AbstractSmartAR<K, V> {
     private final int MIN_KEY_LENGTH = 6;
     private final int MAX_KEY_LENGTH = 12;
     private final int DEFAULT_KEY_LENGTH = 6;
+    private final int GENERATED_KEY_LENGTH = 12;
 
     private final char[] ALPHANUMERIC_CHARS = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
             "abcdefghijklmnopqrstuvwxyz" +
@@ -92,7 +93,7 @@ public class SmartAR<K extends String, V> extends AbstractSmartAR<K, V> {
         StringBuilder stringBuilder = new StringBuilder();
         Random ran = new Random();
 
-        for (int i=0; i<12; i++) {
+        for (int i = 0; i< GENERATED_KEY_LENGTH; i++) {
             int pos = ran.nextInt(ALPHANUMERIC_CHARS.length - 1);
             stringBuilder.append(ALPHANUMERIC_CHARS[pos]);
         }
