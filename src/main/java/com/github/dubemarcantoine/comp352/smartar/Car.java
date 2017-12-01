@@ -1,4 +1,4 @@
-package com.dubemarcantoine.comp352.smartar;
+package com.github.dubemarcantoine.comp352.smartar;
 
 import java.util.Date;
 

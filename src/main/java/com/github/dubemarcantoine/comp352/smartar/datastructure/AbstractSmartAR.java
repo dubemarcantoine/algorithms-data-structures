@@ -1,9 +1,7 @@
-package com.dubemarcantoine.comp352.smartar.datastructure;
+package com.github.dubemarcantoine.comp352.smartar.datastructure;
 
-import com.dubemarcantoine.comp352.smartar.datastructure.Data;
-import com.dubemarcantoine.comp352.smartar.datastructure.SmartARInternalDatastructure;
-import com.dubemarcantoine.comp352.smartar.datastructure.implementation.SequenceSmartARDatastructure;
-import com.dubemarcantoine.comp352.smartar.datastructure.implementation.TreeMapSmartARDatastructure;
+import com.github.dubemarcantoine.comp352.smartar.datastructure.implementation.SequenceSmartARDatastructure;
+import com.github.dubemarcantoine.comp352.smartar.datastructure.implementation.TreeMapSmartARDatastructure;
 
 import java.util.List;
 

@@ -1,5 +1,5 @@
-import com.dubemarcantoine.comp352.smartar.Car
-import com.dubemarcantoine.comp352.smartar.datastructure.implementation.SmartAR
+import com.github.dubemarcantoine.comp352.smartar.Car
+import com.github.dubemarcantoine.comp352.smartar.datastructure.implementation.SmartAR
 import spock.lang.Specification
 import spock.lang.Unroll
 

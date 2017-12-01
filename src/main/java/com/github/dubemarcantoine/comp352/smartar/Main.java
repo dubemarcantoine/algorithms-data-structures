@@ -1,6 +1,6 @@
-package com.dubemarcantoine.comp352.smartar;
+package com.github.dubemarcantoine.comp352.smartar;
 
-import com.dubemarcantoine.comp352.smartar.datastructure.implementation.SmartAR;
+import com.github.dubemarcantoine.comp352.smartar.datastructure.implementation.SmartAR;
 
 import java.io.File;
 import java.io.IOException;

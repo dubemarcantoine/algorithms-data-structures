@@ -1,4 +1,4 @@
-package com.dubemarcantoine.comp352.smartar.datastructure;
+package com.github.dubemarcantoine.comp352.smartar.datastructure;
 
 public class Data<K, V> {
 

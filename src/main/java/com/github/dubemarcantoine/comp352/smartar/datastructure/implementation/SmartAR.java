@@ -1,7 +1,6 @@
-package com.dubemarcantoine.comp352.smartar.datastructure.implementation;
+package com.github.dubemarcantoine.comp352.smartar.datastructure.implementation;
 
-import com.dubemarcantoine.comp352.smartar.Car;
-import com.dubemarcantoine.comp352.smartar.datastructure.AbstractSmartAR;
+import com.github.dubemarcantoine.comp352.smartar.datastructure.AbstractSmartAR;
 
 import java.util.*;
 
