@@ -23,7 +23,8 @@ public class Main {
         ClassLoader classLoader = this.getClass().getClassLoader();
         CustomTimer customTimer = new CustomTimer();
         // Loop on the test files
-        List<String> fileNames = new ArrayList<>(Arrays.asList("ar_test_file0.txt", "ar_test_file1.txt", "ar_test_file2.txt", "ar_test_file3.txt", "ar_test_file4.txt"));
+        List<String> fileNames = new ArrayList<>(Arrays.asList("ar_test_file0.txt", "ar_test_file1.txt",
+                "ar_test_file2.txt", "ar_test_file3.txt", "ar_test_file4.txt"));
         fileNames.forEach(fileName -> {
             try {
                 // Instantiate new SmartAR
@@ -40,16 +41,12 @@ public class Main {
                     System.out.println("Finished parsing file in " + customTimer.stop() + "ms");
                     // Add the keys to SmartAR
                     customTimer.start();
-                    keys.forEach(key -> {
-                        smartAR.add(key, new Car(key));
-                    });
+                    keys.forEach(key -> smartAR.add(key, new Car(key)));
                     System.out.println("Finished adding " + keys.size() + " data in " + customTimer.stop() + "ms");
                 } else {
                     System.out.println("The file does not exist!");
                 }
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (URISyntaxException | IOException e) {
                 e.printStackTrace();
             }
         });

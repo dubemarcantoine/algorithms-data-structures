@@ -2,8 +2,12 @@ group 'comp352'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'com.dubemarcantoine.comp352.smartar.Main'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
@@ -21,4 +25,15 @@ dependencies {
     compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.12'
     testCompile group: 'org.spockframework', name: 'spock-core', version: '1.1-groovy-2.4'
 
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'COMP352 Assignment 4: SMARTAR',
+                'Implementation-Version': version,
+                'Main-Class': mainClassName
+    }
+    baseName = 'a4'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }
